@@ -1,14 +1,29 @@
 package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
+import arrow.core.Right
 import com.yokoro.terminal_lib.core.Failure
 import com.yokoro.terminal_lib.entity.Cursor
+import com.yokoro.terminal_lib.entity.ScreenSize
 
-interface CursorRepository {
-    fun moveTo(x: Int, y: Int): Either<Failure, Cursor>
+class CursorRepository: ICursorRepository {
+    override fun moveTo(c: Cursor, ss: ScreenSize, x: Int, y: Int): Either<Failure, Cursor> {
+        return Right(Cursor(x, y))
+    }
 
-    fun moveDown(n: Int): Either<Failure, Cursor>
-    fun moveUp(n: Int): Either<Failure, Cursor>
-    fun moveLeft(n: Int): Either<Failure, Cursor>
-    fun moveRight(n: Int): Either<Failure, Cursor>
+    override fun moveDown(c: Cursor, ss: ScreenSize, n: Int): Either<Failure, Cursor> {
+        return Right(Cursor(c.x, c.y + n))
+    }
+
+    override fun moveUp(c: Cursor, ss: ScreenSize, n: Int): Either<Failure, Cursor> {
+        TODO("Not yet implemented")
+    }
+
+    override fun moveLeft(c: Cursor, ss: ScreenSize, n: Int): Either<Failure, Cursor> {
+        TODO("Not yet implemented")
+    }
+
+    override fun moveRight(c: Cursor, ss: ScreenSize, n: Int): Either<Failure, Cursor> {
+        TODO("Not yet implemented")
+    }
 }
