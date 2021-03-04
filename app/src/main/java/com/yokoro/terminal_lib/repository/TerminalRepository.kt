@@ -4,44 +4,27 @@ import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 
-interface TerminalRepository {
-    /**
-     * add new row.
-     */
-    fun addRow(lineWarp: Boolean = false): Either<Failure, TerminalBuffer>
+class TerminalRepository: ITerminalRepository {
+    override fun addRow(lineWarp: Boolean): Either<Failure, TerminalBuffer> {
+        TODO("Not yet implemented")
+    }
 
-    /**
-     * set text at (column: x, row: y)
-     *
-     * @param x : column at y
-     * @param y : row
-     * @param text : set text
-     */
-    fun setText(x: Int, y: Int, text: Char): Either<Failure, TerminalBuffer>
+    override fun setText(x: Int, y: Int, text: Char): Either<Failure, TerminalBuffer> {
+        TODO("Not yet implemented")
+    }
 
-    /**
-     * set color at (column: x, row: y)
-     *
-     * @param x : column at y
-     * @param y : row
-     * @param color : color code
-     */
-    fun setColor(x: Int, y: Int, color: Int): Either<Failure, TerminalBuffer>
+    override fun setColor(x: Int, y: Int, color: Int): Either<Failure, TerminalBuffer> {
+        TODO("Not yet implemented")
+    }
 
-    /**
-     * get row CharArray at y
-     *
-     * @param y : row
-     * @return row CharArray
-     */
-    fun getRowCharArrayAt(y: Int): Either<Failure, CharArray>
+    override fun getRowCharArrayAt(y: Int): Either<Failure, CharArray> {
+        TODO("Not yet implemented")
+    }
 
-    /**
-     * resize buffer size
-     *
-     * @param newScreenColumnSize:
-     * @param newScreenRowSize:
-     */
-    fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, TerminalBuffer>
-
+    override fun resize(
+        newScreenColumnSize: Int,
+        newScreenRowSize: Int
+    ): Either<Failure, TerminalBuffer> {
+        TODO("Not yet implemented")
+    }
 }
