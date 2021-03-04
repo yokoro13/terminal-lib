@@ -9,4 +9,6 @@ class TerminalBuffer(
     private val screenSize: ScreenSize
 ) {
     var textBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
+    var topRow: Int = 0
+    var currentRow = 0
 }
