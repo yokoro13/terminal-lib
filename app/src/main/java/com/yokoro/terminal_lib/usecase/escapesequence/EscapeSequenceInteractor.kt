@@ -1,6 +1,8 @@
 package com.yokoro.terminal_lib.usecase.escapesequence
 
+import arrow.core.Either
 import com.yokoro.terminal_lib.entity.Cursor
+import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.repository.ICursorRepository
 import com.yokoro.terminal_lib.repository.ITerminalRepository
 
