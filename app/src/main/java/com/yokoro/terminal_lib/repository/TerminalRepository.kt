@@ -2,9 +2,14 @@ package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 
 class TerminalRepository: ITerminalRepository {
+    override fun getScreenSize(): Either<Failure, ScreenSize> {
+        TODO("Not yet implemented")
+    }
+
     override fun addRow(lineWarp: Boolean): Either<Failure, TerminalBuffer> {
         TODO("Not yet implemented")
     }

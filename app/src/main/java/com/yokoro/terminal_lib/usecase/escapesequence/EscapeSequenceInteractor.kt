@@ -8,8 +8,16 @@ class EscapeSequenceInteractor(
     private var cursorRepository: ICursorRepository,
     private var terminalRepository: ITerminalRepository
 ): EscapeSequenceUseCase {
+    private fun getScreenSize(): ScreenSize =
+        when (val result = terminalRepository.getScreenSize()){
+            is Either.Right -> result.b
+            is Either.Left -> {
+                throw IllegalArgumentException("")
+            }
+        }
+
     override fun moveRight(cursor: Cursor, n: Int) {
-        TODO("Not yet implemented")
+        cursorRepository.moveRight(cursor, getScreenSize(), n)
     }
 
     override fun moveLeft(cursor: Cursor, n: Int) {
