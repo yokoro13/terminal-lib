@@ -2,9 +2,16 @@ package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 
 interface ITerminalRepository {
+
+    /**
+     * get setting screen size
+     */
+    fun getScreenSize(): Either<Failure, ScreenSize>
+
     /**
      * add new row.
      */
