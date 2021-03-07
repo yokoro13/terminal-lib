@@ -43,7 +43,7 @@ interface ITerminalRepository {
      * @param y : row
      * @return row CharArray
      */
-    fun getRowCharArrayAt(y: Int): Either<Failure, CharArray>
+    fun getTextBuffer(): Either<Failure, ArrayList<TerminalRow>>
 
     /**
      * resize buffer size

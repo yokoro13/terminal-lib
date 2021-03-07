@@ -24,7 +24,7 @@ class TerminalRepository: ITerminalRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getRowCharArrayAt(y: Int): Either<Failure, CharArray> {
+    override fun getTextBuffer(): Either<Failure, ArrayList<TerminalRow>> {
         TODO("Not yet implemented")
     }
 
