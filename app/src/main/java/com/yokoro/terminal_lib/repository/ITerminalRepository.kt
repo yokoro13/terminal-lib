@@ -5,6 +5,7 @@ import com.yokoro.terminal_lib.core.Failure
 import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
+import com.yokoro.terminal_lib.entity.TerminalRow
 
 interface ITerminalRepository {
 
