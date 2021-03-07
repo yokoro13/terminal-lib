@@ -2,6 +2,7 @@ package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 
@@ -30,6 +31,14 @@ class TerminalRepository: ITerminalRepository {
         newScreenColumnSize: Int,
         newScreenRowSize: Int
     ): Either<Failure, TerminalBuffer> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCurrentRow(): Either<Failure, Int> {
+        TODO("Not yet implemented")
+    }
+
+    override fun setCurrentRow(n: Int): Either<Failure, UseCase.None> {
         TODO("Not yet implemented")
     }
 }

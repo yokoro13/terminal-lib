@@ -2,6 +2,7 @@ package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 
@@ -50,5 +51,9 @@ interface ITerminalRepository {
      * @param newScreenRowSize:
      */
     fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, TerminalBuffer>
+
+    fun getCurrentRow(): Either<Failure, Int>
+
+    fun setCurrentRow(n: Int): Either<Failure, UseCase.None>
 
 }
