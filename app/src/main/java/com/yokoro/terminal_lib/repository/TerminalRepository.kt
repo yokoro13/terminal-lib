@@ -35,11 +35,11 @@ class TerminalRepository: ITerminalRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getCurrentRow(): Either<Failure, Int> {
+    override fun getTopRow(): Either<Failure, Int> {
         TODO("Not yet implemented")
     }
 
-    override fun setCurrentRow(n: Int): Either<Failure, UseCase.None> {
+    override fun setTopRow(n: Int): Either<Failure, UseCase.None> {
         TODO("Not yet implemented")
     }
 }

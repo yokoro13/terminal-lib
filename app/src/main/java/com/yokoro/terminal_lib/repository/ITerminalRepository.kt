@@ -53,8 +53,8 @@ interface ITerminalRepository {
      */
     fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, TerminalBuffer>
 
-    fun getCurrentRow(): Either<Failure, Int>
+    fun getTopRow(): Either<Failure, Int>
 
-    fun setCurrentRow(n: Int): Either<Failure, UseCase.None>
+    fun setTopRow(n: Int): Either<Failure, UseCase.None>
 
 }

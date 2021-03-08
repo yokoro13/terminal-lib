@@ -6,13 +6,13 @@ import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.repository.ITerminalRepository
 import javax.inject.Inject
 
-class SetCurrentRow
+class SetTopRow
 @Inject constructor(
     private val ITerminalRepository: ITerminalRepository
-): UseCase<UseCase.None, SetCurrentRow.Params>() {
+): UseCase<UseCase.None, SetTopRow.Params>() {
 
     override suspend fun run(params: Params): Either<Failure, UseCase.None>
-            = ITerminalRepository.setCurrentRow(params.n)
+            = ITerminalRepository.setTopRow(params.n)
 
     data class Params(val n: Int)
 }
