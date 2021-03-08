@@ -1,6 +1,6 @@
 package com.yokoro.terminal_lib.usecase.escapesequence
 
-import arrow.core.Either
+import arrow.core.getOrElse
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.repository.ICursorRepository
@@ -11,12 +11,13 @@ class EscapeSequenceInteractor(
     private var terminalRepository: ITerminalRepository
 ): EscapeSequenceUseCase {
     private fun getScreenSize(): ScreenSize =
-        when (val result = terminalRepository.getScreenSize()){
-            is Either.Right -> result.b
-            is Either.Left -> {
-                throw IllegalArgumentException("")
-            }
-        }
+        terminalRepository.getScreenSize().getOrElse { throw IllegalArgumentException("") }
+
+    private fun getTextBuffer(): List<TerminalRow> =
+        terminalRepository.getTextBuffer().getOrElse { throw IllegalArgumentException("") }
+
+    private fun getCurrentRow(): Int =
+        terminalRepository.getCurrentRow().getOrElse { throw IllegalArgumentException("") }
 
     override fun moveRight(cursor: Cursor, n: Int) {
         cursorRepository.moveRight(cursor, getScreenSize(), n)
