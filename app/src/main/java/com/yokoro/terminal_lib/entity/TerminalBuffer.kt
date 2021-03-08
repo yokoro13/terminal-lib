@@ -10,5 +10,9 @@ class TerminalBuffer(
 ) {
     var textBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
     var topRow: Int = 0
-    var currentRow = 0
+    set(value) {
+        if (value < 0) {
+            field = 0
+        }
+    }
 }
