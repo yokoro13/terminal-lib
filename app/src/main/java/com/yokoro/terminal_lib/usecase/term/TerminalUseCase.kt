@@ -3,6 +3,7 @@ package com.yokoro.terminal_lib.usecase.term
 import com.yokoro.terminal_lib.usecase.term.*
 
 class TerminalUseCase (
+    private val createTerminalBuffer: CreateTerminalBuffer,
     private val getTextBuffer: GetTextBuffer,
     private val resize: Resize,
     private val setColor: SetColor,

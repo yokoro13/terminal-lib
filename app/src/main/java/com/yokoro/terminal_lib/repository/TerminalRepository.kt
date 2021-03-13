@@ -13,6 +13,10 @@ import com.yokoro.terminal_lib.entity.TerminalRow
  *
  */
 class TerminalRepository: ITerminalRepository {
+    override fun createTerminalBuffer(): Either<Failure, None> {
+        TODO("Not yet implemented")
+    }
+
     override fun getScreenSize(): Either<Failure, ScreenSize> {
         TODO("Not yet implemented")
     }

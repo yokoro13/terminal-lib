@@ -1,6 +1,7 @@
 package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
+import arrow.core.None
 import com.yokoro.terminal_lib.core.Failure
 import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
@@ -8,6 +9,8 @@ import com.yokoro.terminal_lib.entity.TerminalBuffer
 import com.yokoro.terminal_lib.entity.TerminalRow
 
 interface ITerminalRepository {
+
+    fun createTerminalBuffer(): Either<Failure, None>
 
     /**
      * get setting screen size
@@ -55,6 +58,6 @@ interface ITerminalRepository {
 
     fun getTopRow(): Either<Failure, Int>
 
-    fun setTopRow(n: Int): Either<Failure, UseCase.None>
+    fun setTopRow(n: Int): Either<Failure, None>
 
 }
