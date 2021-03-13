@@ -1,12 +1,17 @@
 package com.yokoro.terminal_lib.repository
 
 import arrow.core.Either
+import arrow.core.None
 import com.yokoro.terminal_lib.core.Failure
 import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalBuffer
 import com.yokoro.terminal_lib.entity.TerminalRow
 
+/**
+ * データの保存，取得をおこなう
+ *
+ */
 class TerminalRepository: ITerminalRepository {
     override fun getScreenSize(): Either<Failure, ScreenSize> {
         TODO("Not yet implemented")
@@ -39,7 +44,7 @@ class TerminalRepository: ITerminalRepository {
         TODO("Not yet implemented")
     }
 
-    override fun setTopRow(n: Int): Either<Failure, UseCase.None> {
+    override fun setTopRow(n: Int): Either<Failure, None> {
         TODO("Not yet implemented")
     }
 }

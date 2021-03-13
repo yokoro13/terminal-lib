@@ -1,15 +1,12 @@
 package com.yokoro.terminal_lib.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.yokoro.terminal_lib.core.UseCase
-import com.yokoro.terminal_lib.usecase.EscapeSequenceUseCases
-import com.yokoro.terminal_lib.usecase.TerminalUseCases
-import com.yokoro.terminal_lib.usecase.cursor.*
-import com.yokoro.terminal_lib.usecase.term.*
+import com.yokoro.terminal_lib.usecase.escapesequence.IEscapeSequenceUseCase
+import com.yokoro.terminal_lib.usecase.term.ITerminalUseCase
 
 class TerminalViewModel (
-    val escapeSequenceUseCases: EscapeSequenceUseCases,
-    val terminalUseCases: TerminalUseCases
+    val escapeSequenceUseCase: IEscapeSequenceUseCase,
+    val terminalUseCases: ITerminalUseCase
     ): ViewModel() {
 
     // TODO View の状態を書く
