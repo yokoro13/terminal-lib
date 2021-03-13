@@ -5,10 +5,10 @@ package com.yokoro.terminal_lib.entity
  * @param screenColumnSize : 画面の横幅
  * @param screenRowSize : 画面の縦幅
  */
-class TerminalBuffer(
-    private val screenSize: ScreenSize
+class Terminal(
+    var screenSize: ScreenSize
 ) {
-    var textBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
+    var terminalBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
     var topRow: Int = 0
     set(value) {
         if (value < 0) {
@@ -16,3 +16,4 @@ class TerminalBuffer(
         }
     }
 }
+

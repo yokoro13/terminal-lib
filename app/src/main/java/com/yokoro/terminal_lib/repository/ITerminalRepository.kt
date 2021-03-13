@@ -3,14 +3,13 @@ package com.yokoro.terminal_lib.repository
 import arrow.core.Either
 import arrow.core.None
 import com.yokoro.terminal_lib.core.Failure
-import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.ScreenSize
-import com.yokoro.terminal_lib.entity.TerminalBuffer
+import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.entity.TerminalRow
 
 interface ITerminalRepository {
 
-    fun createTerminalBuffer(): Either<Failure, None>
+    fun createTerminalBuffer(ss: ScreenSize): Either<Failure, None>
 
     /**
      * get setting screen size
@@ -20,7 +19,7 @@ interface ITerminalRepository {
     /**
      * add new row.
      */
-    fun addRow(lineWarp: Boolean = false): Either<Failure, TerminalBuffer>
+    fun addRow(lineWarp: Boolean = false): Either<Failure, Terminal>
 
     /**
      * set text at (column: x, row: y)
@@ -29,7 +28,7 @@ interface ITerminalRepository {
      * @param y : row
      * @param text : set text
      */
-    fun setText(x: Int, y: Int, text: Char): Either<Failure, TerminalBuffer>
+    fun setText(x: Int, y: Int, text: Char): Either<Failure, Terminal>
 
     /**
      * set color at (column: x, row: y)
@@ -38,7 +37,7 @@ interface ITerminalRepository {
      * @param y : row
      * @param color : color code
      */
-    fun setColor(x: Int, y: Int, color: Int): Either<Failure, TerminalBuffer>
+    fun setColor(x: Int, y: Int, color: Int): Either<Failure, Terminal>
 
     /**
      * get row CharArray at y
@@ -54,7 +53,7 @@ interface ITerminalRepository {
      * @param newScreenColumnSize:
      * @param newScreenRowSize:
      */
-    fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, TerminalBuffer>
+    fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, Terminal>
 
     fun getTopRow(): Either<Failure, Int>
 
