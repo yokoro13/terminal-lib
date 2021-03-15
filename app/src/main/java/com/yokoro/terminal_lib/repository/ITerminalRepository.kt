@@ -9,7 +9,7 @@ import com.yokoro.terminal_lib.entity.TerminalRow
 
 interface ITerminalRepository {
 
-    fun createTerminalBuffer(ss: ScreenSize): Either<Failure, None>
+    fun createTerminal(ss: ScreenSize): Either<Failure, None>
 
     /**
      * get setting screen size

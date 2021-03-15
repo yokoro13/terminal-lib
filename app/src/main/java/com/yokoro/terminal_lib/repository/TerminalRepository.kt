@@ -31,7 +31,7 @@ class TerminalRepository: ITerminalRepository {
             }
         }
 
-    override fun createTerminalBuffer(ss: ScreenSize): Either<Failure, None> {
+    override fun createTerminal(ss: ScreenSize): Either<Failure, None> {
         this.terminal = Terminal(ss)
         addRow(false)
         return Right(None)
