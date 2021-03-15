@@ -50,10 +50,9 @@ interface ITerminalRepository {
     /**
      * resize buffer size
      *
-     * @param newScreenColumnSize:
-     * @param newScreenRowSize:
+     * @param newScreenSize
      */
-    fun resize(newScreenColumnSize: Int, newScreenRowSize: Int): Either<Failure, Terminal>
+    fun resize(newScreenSize: ScreenSize): Either<Failure, Terminal>
 
     fun getTopRow(): Either<Failure, Int>
 

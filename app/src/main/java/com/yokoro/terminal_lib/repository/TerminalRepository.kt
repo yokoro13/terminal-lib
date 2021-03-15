@@ -63,8 +63,7 @@ class TerminalRepository: ITerminalRepository {
         getOrError(terminal.terminalBuffer)
 
     override fun resize(
-        newScreenColumnSize: Int,
-        newScreenRowSize: Int
+       newScreenSize: ScreenSize
     ): Either<Failure, Terminal> {
         if (::terminal.isInitialized) {
             return Left(Failure.UninitializedException)
@@ -78,8 +77,8 @@ class TerminalRepository: ITerminalRepository {
 
         newTextBuffer.add(
             TerminalRow(
-                CharArray(newScreenColumnSize){' '},
-                IntArray(newScreenColumnSize){0},
+                CharArray(newScreenSize.rows){' '},
+                IntArray(newScreenSize.rows){0},
                 false
             )
         )
@@ -110,8 +109,8 @@ class TerminalRepository: ITerminalRepository {
             lineWarp = oldX != terminal.screenSize.columns
             newTextBuffer.add(
                 TerminalRow(
-                    CharArray(newScreenColumnSize){' '},
-                    IntArray(newScreenColumnSize){0},
+                    CharArray(newScreenSize.rows){' '},
+                    IntArray(newScreenSize.rows){0},
                     lineWarp
                 )
             )
@@ -119,7 +118,7 @@ class TerminalRepository: ITerminalRepository {
 
         terminal.terminalBuffer.clear()
         terminal.terminalBuffer = newTextBuffer
-        terminal.screenSize = ScreenSize(newScreenColumnSize, newScreenRowSize)
+        terminal.screenSize = newScreenSize
 
         return Right(terminal)
     }
