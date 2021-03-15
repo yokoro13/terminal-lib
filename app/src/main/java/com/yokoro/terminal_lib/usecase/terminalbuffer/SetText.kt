@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.terminal
+package com.yokoro.terminal_lib.usecase.terminalbuffer
 
 import arrow.core.Either
 import com.yokoro.terminal_lib.core.Failure

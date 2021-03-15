@@ -6,24 +6,24 @@ import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalRow
 import com.yokoro.terminal_lib.usecase.cursor.ICursorUseCase
-import com.yokoro.terminal_lib.usecase.terminal.*
+import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
+import com.yokoro.terminal_lib.usecase.terminal.GetScreenSize
+import com.yokoro.terminal_lib.usecase.terminal.GetTopRow
+import com.yokoro.terminal_lib.usecase.terminal.SetTopRow
 
 class EscapeSequenceUseCase(
-    private val addNewRow: AddNewRow,
-    private val getTextBuffer: GetTextBuffer,
-    private val setColor: SetColor,
-    private val setText: SetText,
     private val getScreenSize: GetScreenSize,
     private val getTopRow: GetTopRow,
     private val setTopRow: SetTopRow,
-    private val cursorUseCase: ICursorUseCase
+    private val cursorUseCase: ICursorUseCase,
+    private val terminalBufferUseCase: ITerminalBufferUseCase
 ) : IEscapeSequenceUseCase {
 
     private suspend fun getScreenSize(): ScreenSize =
         getScreenSize.run(None).getOrElse { throw IllegalArgumentException("") }
 
-    private suspend fun getTextBuffer(): List<TerminalRow> =
-        getTextBuffer.run(None).getOrElse { throw IllegalArgumentException("") }
+    private suspend fun getTerminalBuffer(): ArrayList<TerminalRow> =
+        terminalBufferUseCase.getTerminalBuffer()
 
     private suspend fun getTopRow(): Int =
         getTopRow.run(None).getOrElse { throw IllegalArgumentException("") }
@@ -46,9 +46,9 @@ class EscapeSequenceUseCase(
     override suspend fun moveDown(cursor: Cursor, n: Int) {
         cursorUseCase.moveDown(cursor, getScreenSize(), n)
 
-        if (getTextBuffer().size <= getCurrentRow(cursor)) {
-            for (i in 0 .. getCurrentRow(cursor) - getTextBuffer().size) {
-                addNewRow.run(AddNewRow.Params())
+        if (getTerminalBuffer().size <= getCurrentRow(cursor)) {
+            for (i in 0 .. getCurrentRow(cursor) - getTerminalBuffer().size) {
+                terminalBufferUseCase.addNewRow(false)
             }
         }
     }
@@ -83,7 +83,7 @@ class EscapeSequenceUseCase(
     private suspend fun clearScreenFromCursor(cursor: Cursor) {
         clearLineFrom(getCurrentRow(cursor), cursor.x)
         for (y in cursor.y+1 until getScreenSize().rows) {
-            if (getCurrentRow(cursor) - cursor.y + y <= getTextBuffer().size) {
+            if (getCurrentRow(cursor) - cursor.y + y <= getTerminalBuffer().size) {
                 break
             }
             clearLineFrom(getCurrentRow(cursor) - cursor.y + y, 0)
@@ -109,13 +109,13 @@ class EscapeSequenceUseCase(
 
     private suspend fun clearLineFrom(line: Int, from: Int) {
         for (x in from until getScreenSize().columns) {
-            setText.run(SetText.Params(x, line, ' '))
+            terminalBufferUseCase.setText(x, line, ' ')
         }
     }
 
     private suspend fun clearLineTo(line: Int, to: Int) {
         for (x in 0 until to) {
-            setText.run(SetText.Params(x, line, ' '))
+            terminalBufferUseCase.setText(x, line, ' ')
         }
     }
 
@@ -130,7 +130,7 @@ class EscapeSequenceUseCase(
     }
 
     override suspend fun scrollNext(n: Int) {
-        if (getTopRow() + n > getTextBuffer().size) return  //一番したに空白追加？？
+        if (getTopRow() + n > getTerminalBuffer().size) return  //一番したに空白追加？？
         setTopRow.run(SetTopRow.Params(getTopRow() + n))
     }
 

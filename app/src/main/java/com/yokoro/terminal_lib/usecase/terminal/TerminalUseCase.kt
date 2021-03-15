@@ -2,14 +2,13 @@ package com.yokoro.terminal_lib.usecase.terminal
 
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
+import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
 
 class TerminalUseCase (
-    private val addNewRow: AddNewRow,
     private val createTerminalBuffer: CreateTerminalBuffer,
     private val resize: Resize,
-    private val setColor: SetColor,
-    private val setText: SetText,
     private val getScreenSize: GetScreenSize,
+    private val terminalBufferUseCase: ITerminalBufferUseCase
     ): ITerminalUseCase {
 
     override suspend fun addNewRow(warp: Boolean) {

@@ -59,7 +59,7 @@ class TerminalRepository: ITerminalRepository {
             this.terminal.terminalBuffer[y].color[x] = color
         }
 
-    override fun getTextBuffer(): Either<Failure, ArrayList<TerminalRow>> =
+    override fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalRow>> =
         getOrError(terminal.terminalBuffer)
 
     override fun resize(
