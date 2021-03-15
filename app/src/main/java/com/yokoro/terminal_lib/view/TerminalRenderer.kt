@@ -1,7 +1,7 @@
 package com.yokoro.terminal_lib.view
 
 import android.graphics.*
-import com.yokoro.terminal_lib.entity.TerminalBuffer
+import com.yokoro.terminal_lib.entity.Terminal
 import kotlin.math.abs
 import kotlin.math.ceil
 
@@ -13,17 +13,17 @@ class TerminalRenderer(textSize: Int) {
     var titleBar: Int = 0
     var fontHeight: Int = 0
 
-    fun render(termBuffer: TerminalBuffer, canvas: Canvas, topRow: Int, cursor: TerminalView.Cursor, showCursor: Boolean, pad: Int, keyboard: Int) {
-        val displayRows = if (topRow + termBuffer.screenRowSize <= termBuffer.totalLines){
-            topRow + termBuffer.screenRowSize
+    fun render(term: Terminal, canvas: Canvas, topRow: Int, cursor: TerminalView.Cursor, showCursor: Boolean, pad: Int, keyboard: Int) {
+        val displayRows = if (topRow + term.screenRowSize <= term.totalLines){
+            topRow + term.screenRowSize
         } else {
-            termBuffer.totalLines
+            term.totalLines
         }
 
         var padding = pad
 
         if(keyboard != 0) {
-            val inv = termBuffer.screenRowSize - (keyboard+pad) / fontLineSpacing
+            val inv = term.screenRowSize - (keyboard+pad) / fontLineSpacing
 
             val keyPadding = if (cursor.y <= inv) {
                 0
@@ -34,7 +34,7 @@ class TerminalRenderer(textSize: Int) {
         }
 
         for (row in topRow until displayRows) {
-            canvas.drawText(termBuffer.getRowText(row), 0, termBuffer.screenColumnSize, 0f,titleBar + (fontLineSpacing * (row-topRow).toFloat())-padding, textPaint)
+            canvas.drawText(term.getRowText(row), 0, term.screenColumnSize, 0f,titleBar + (fontLineSpacing * (row-topRow).toFloat())-padding, textPaint)
         }
         moveToSavedCursor(canvas, cursor, showCursor, padding)
     }

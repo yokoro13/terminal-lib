@@ -12,7 +12,7 @@ import android.view.View
 import android.view.inputmethod.BaseInputConnection
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
-import com.yokoro.terminal_lib.entity.TerminalBuffer
+import com.yokoro.terminal_lib.entity.Terminal
 import kotlin.math.abs
 
 
@@ -21,7 +21,7 @@ class TerminalView : View {
     private var inputListener: InputListener? = null
     private var gestureListener: GestureListener? = null
 
-    lateinit var termBuffer: TerminalBuffer
+    lateinit var term: Terminal
 
     private var textSize: Int = 25
 
@@ -105,7 +105,7 @@ class TerminalView : View {
         if (!isDisplaying) {
             isDisplaying = true
             val keyboard = if (isShowingKeyboard) keyboardHeight else 0
-            terminalRenderer.render(termBuffer, canvas, termBuffer.topRow, cursor, cursorIsInScreen(), paddingBottom, keyboard)
+            terminalRenderer.render(term, canvas, term.topRow, cursor, cursorIsInScreen(), paddingBottom, keyboard)
             isDisplaying = false
         }
     }
@@ -135,14 +135,14 @@ class TerminalView : View {
     }
 
     private fun scrollDown() {
-        if (termBuffer.totalLines > termBuffer.screenRowSize) {
+        if (term.totalLines > term.screenRowSize) {
             // 一番下の行までしか表示させない
-            if (termBuffer.topRow + termBuffer.screenRowSize < termBuffer.totalLines) {
+            if (term.topRow + term.screenRowSize < term.totalLines) {
                 //表示する一番上の行を１つ下に
-                termBuffer.topRow++
+                term.topRow++
                 if (cursorIsInScreen()) {
                     setEditable(true)
-                    cursor.y = termBuffer.currentRow - termBuffer.topRow
+                    cursor.y = term.currentRow - term.topRow
                 } else {
                     setEditable(false)
                 }
@@ -152,13 +152,13 @@ class TerminalView : View {
     }
 
     private fun scrollUp() {
-        if (termBuffer.totalLines > termBuffer.screenRowSize) {
+        if (term.totalLines > term.screenRowSize) {
             //表示する一番上の行を１つ上に
-            termBuffer.topRow--
+            term.topRow--
             // カーソルが画面内にある
             if (cursorIsInScreen()) {
                 setEditable(true)
-                cursor.y = termBuffer.currentRow - termBuffer.topRow
+                cursor.y = term.currentRow - term.topRow
             } else { //画面外
                 setEditable(false)
             }

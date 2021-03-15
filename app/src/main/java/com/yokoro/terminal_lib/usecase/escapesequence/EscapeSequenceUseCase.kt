@@ -6,7 +6,7 @@ import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalRow
 import com.yokoro.terminal_lib.usecase.cursor.ICursorUseCase
-import com.yokoro.terminal_lib.usecase.term.*
+import com.yokoro.terminal_lib.usecase.terminal.*
 
 class EscapeSequenceUseCase(
     private val addNewRow: AddNewRow,

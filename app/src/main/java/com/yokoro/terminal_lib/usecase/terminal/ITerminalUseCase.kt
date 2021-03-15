@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.term
+package com.yokoro.terminal_lib.usecase.terminal
 
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
