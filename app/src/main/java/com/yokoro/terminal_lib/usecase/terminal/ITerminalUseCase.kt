@@ -4,12 +4,9 @@ import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 
 interface ITerminalUseCase {
+    suspend fun createTerminal(screenSize: ScreenSize)
 
-    suspend fun addNewRow(warp: Boolean)
-
-    suspend fun createTerminalBuffer()
-
-    suspend fun resize()
+    suspend fun resize(newScreenSize: ScreenSize)
 
     suspend fun getScreenSize(): ScreenSize
 

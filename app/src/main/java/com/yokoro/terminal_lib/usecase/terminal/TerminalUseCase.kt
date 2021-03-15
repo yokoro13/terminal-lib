@@ -1,45 +1,43 @@
 package com.yokoro.terminal_lib.usecase.terminal
 
+import arrow.core.None
+import arrow.core.getOrElse
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
 
 class TerminalUseCase (
-    private val createTerminalBuffer: CreateTerminalBuffer,
+    private val createTerminal: CreateTerminal,
     private val resize: Resize,
     private val getScreenSize: GetScreenSize,
+    private val setTopRow: SetTopRow,
+    private val gatTopRow: GetTopRow,
     private val terminalBufferUseCase: ITerminalBufferUseCase
     ): ITerminalUseCase {
 
-    override suspend fun addNewRow(warp: Boolean) {
-        TODO("Not yet implemented")
+    override suspend fun createTerminal(screenSize: ScreenSize) {
+        createTerminal.run(CreateTerminal.Params(screenSize))
     }
 
-    override suspend fun createTerminalBuffer() {
-        TODO("Not yet implemented")
+    override suspend fun resize(newScreenSize: ScreenSize) {
+        resize.run(Resize.Params(newScreenSize))
     }
 
-    override suspend fun resize() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getScreenSize(): ScreenSize =
+        getScreenSize.run(None).getOrElse { throw IllegalArgumentException("") }
 
-    override suspend fun getScreenSize(): ScreenSize {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getTopRow(): Int {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getTopRow(): Int =
+        gatTopRow.run(None).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun setTopRow(n: Int) {
-        TODO("Not yet implemented")
+        setTopRow.run(SetTopRow.Params(n))
     }
 
     override suspend fun inputText(cursor: Cursor, text: Char) {
-        TODO("Not yet implemented")
+        terminalBufferUseCase.setText(cursor.x, cursor.y, text)
     }
 
     override suspend fun inputColor(cursor: Cursor, color: Int) {
-        TODO("Not yet implemented")
+        terminalBufferUseCase.setColor(cursor.x, cursor.y, color)
     }
 }
