@@ -5,6 +5,7 @@ import arrow.core.Left
 import arrow.core.None
 import arrow.core.Right
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.entity.TerminalRow
@@ -130,4 +131,8 @@ class TerminalRepository: ITerminalRepository {
         handleOrError(None) {
             terminal.topRow = n
         }
+
+    override fun getCursor(): Either<Failure, Cursor> =
+        getOrError(terminal.cursor)
+
 }

@@ -8,6 +8,7 @@ package com.yokoro.terminal_lib.entity
 class Terminal(
     var screenSize: ScreenSize
 ) {
+    var cursor: Cursor = Cursor(0, 0)
     var terminalBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
     var topRow: Int = 0
     set(value) {

@@ -3,6 +3,7 @@ package com.yokoro.terminal_lib.repository
 import arrow.core.Either
 import arrow.core.None
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.entity.TerminalRow
@@ -58,4 +59,5 @@ interface ITerminalRepository {
 
     fun setTopRow(n: Int): Either<Failure, None>
 
+    fun getCursor(): Either<Failure, Cursor>
 }
