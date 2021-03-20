@@ -4,7 +4,6 @@ import arrow.core.None
 import arrow.core.getOrElse
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
-import com.yokoro.terminal_lib.usecase.cursor.GetCursor
 import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
 
 class TerminalUseCase (
@@ -12,7 +11,7 @@ class TerminalUseCase (
     private val resize: Resize,
     private val getScreenSize: GetScreenSize,
     private val setTopRow: SetTopRow,
-    private val gatTopRow: GetTopRow,
+    private val getTopRow: GetTopRow,
     private val terminalBufferUseCase: ITerminalBufferUseCase
     ): ITerminalUseCase {
 
@@ -28,7 +27,7 @@ class TerminalUseCase (
         getScreenSize.run(None).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun getTopRow(): Int =
-        gatTopRow.run(None).getOrElse { throw IllegalArgumentException("") }
+        getTopRow.run(None).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun setTopRow(n: Int) {
         setTopRow.run(SetTopRow.Params(n))
