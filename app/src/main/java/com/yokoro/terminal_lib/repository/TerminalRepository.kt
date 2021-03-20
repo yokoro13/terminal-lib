@@ -132,7 +132,27 @@ class TerminalRepository: ITerminalRepository {
             terminal.topRow = n
         }
 
+    override fun setCursor(x: Int, y: Int): Either<Failure, None> =
+        handleOrError(None) {
+            setX(x)
+            setY(y)
+        }
+
     override fun getCursor(): Either<Failure, Cursor> =
         getOrError(terminal.cursor)
+
+    private fun setX(x: Int): Cursor =
+        when {
+            (x < 0) -> Cursor(0, terminal.cursor.y)
+            (terminal.screenSize.columns <= x) -> Cursor(terminal.screenSize.columns - 1, terminal.cursor.y)
+            else -> Cursor(x, terminal.cursor.y)
+        }
+
+    private fun setY(y: Int): Cursor =
+        when {
+            (y < 0) -> Cursor(terminal.cursor.x, 0)
+            (terminal.screenSize.columns <= y) -> Cursor(terminal.cursor.x, terminal.screenSize.columns - 1)
+            else -> Cursor(terminal.cursor.x, y)
+        }
 
 }

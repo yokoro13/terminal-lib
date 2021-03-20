@@ -4,6 +4,7 @@ import arrow.core.None
 import arrow.core.getOrElse
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
+import com.yokoro.terminal_lib.usecase.cursor.GetCursor
 import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
 
 class TerminalUseCase (
@@ -40,4 +41,7 @@ class TerminalUseCase (
     override suspend fun inputColor(cursor: Cursor, color: Int) {
         terminalBufferUseCase.setColor(cursor.x, cursor.y, color)
     }
+
+
+
 }

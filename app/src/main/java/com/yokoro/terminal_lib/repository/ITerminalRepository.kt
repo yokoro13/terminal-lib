@@ -59,5 +59,8 @@ interface ITerminalRepository {
 
     fun setTopRow(n: Int): Either<Failure, None>
 
+    fun setCursor(x: Int, y: Int): Either<Failure, None>
+
     fun getCursor(): Either<Failure, Cursor>
+
 }

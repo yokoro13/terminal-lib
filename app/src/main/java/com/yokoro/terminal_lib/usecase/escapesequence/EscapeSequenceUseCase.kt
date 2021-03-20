@@ -54,17 +54,17 @@ class EscapeSequenceUseCase(
     }
 
     override suspend fun moveUpToLineHead(cursor: Cursor, n: Int) {
-        cursorUseCase.setCursor(cursor, getScreenSize(), 0, cursor.y)
+        cursorUseCase.setCursor(0, cursor.y)
         moveUp(cursor, n)
     }
 
     override suspend fun moveDownToLineHead(cursor: Cursor, n: Int) {
-        cursorUseCase.setCursor(cursor, getScreenSize(), 0, cursor.y)
+        cursorUseCase.setCursor(0, cursor.y)
         moveDown(cursor, n)
     }
 
     override suspend fun moveCursor(cursor: Cursor, n: Int) {
-        cursorUseCase.setCursor(cursor, getScreenSize(), n, cursor.y)
+        cursorUseCase.setCursor(n, cursor.y)
     }
 
     override suspend fun moveCursor(cursor: Cursor, n: Int, m: Int) {
