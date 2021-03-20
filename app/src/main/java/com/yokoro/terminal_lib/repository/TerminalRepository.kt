@@ -78,8 +78,8 @@ class TerminalRepository: ITerminalRepository {
 
         newTextBuffer.add(
             TerminalRow(
-                CharArray(newScreenSize.rows){' '},
-                IntArray(newScreenSize.rows){0},
+                CharArray(newScreenSize.columns){' '},
+                IntArray(newScreenSize.columns){0},
                 false
             )
         )
@@ -110,8 +110,8 @@ class TerminalRepository: ITerminalRepository {
             lineWarp = oldX != terminal.screenSize.columns
             newTextBuffer.add(
                 TerminalRow(
-                    CharArray(newScreenSize.rows){' '},
-                    IntArray(newScreenSize.rows){0},
+                    CharArray(newScreenSize.columns){' '},
+                    IntArray(newScreenSize.columns){0},
                     lineWarp
                 )
             )
@@ -151,7 +151,7 @@ class TerminalRepository: ITerminalRepository {
     private fun setY(y: Int): Cursor =
         when {
             (y < 0) -> Cursor(terminal.cursor.x, 0)
-            (terminal.screenSize.columns <= y) -> Cursor(terminal.cursor.x, terminal.screenSize.columns - 1)
+            (terminal.screenSize.rows <= y) -> Cursor(terminal.cursor.x, terminal.screenSize.rows - 1)
             else -> Cursor(terminal.cursor.x, y)
         }
 
