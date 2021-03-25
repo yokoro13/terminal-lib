@@ -16,16 +16,14 @@ class ScreenUseCase(
 
     private suspend fun getCursor() = cursorUseCase.getCursor()
 
-    private suspend fun cursorIsInScreen(): Boolean =
-        0 <= getCursor().x && getCursor().x < getScreenSize().columns
-                && 0 <= getCursor().y && getCursor().y < getScreenSize().rows
-
     override suspend fun scrollDown() {
         if (terminalUseCase.getTopRow() + terminalUseCase.getScreenSize().rows < getBufferSize()) {
             //表示する一番上の行を１つ下に
             terminalUseCase.setTopRow(terminalUseCase.getTopRow()+1)
-            if (cursorIsInScreen()) {
+            if (getCursor().y + 1 != getScreenSize().rows) {
                 cursorUseCase.setCursor(getCursor().x, getCursor().y++)
+            } else {
+                cursorUseCase.setDisplayingState(false)
             }
         }
     }
@@ -35,8 +33,10 @@ class ScreenUseCase(
             //表示する一番上の行を１つ上に
             terminalUseCase.setTopRow(terminalUseCase.getTopRow()-1)
             // カーソルが画面内にある
-            if (cursorIsInScreen()) {
+            if (getCursor().y != 0) {
                 cursorUseCase.setCursor(getCursor().x, getCursor().y--)
+            } else {
+                cursorUseCase.setDisplayingState(false)
             }
         }
     }
