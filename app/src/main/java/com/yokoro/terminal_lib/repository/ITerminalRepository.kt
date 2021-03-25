@@ -63,10 +63,6 @@ interface ITerminalRepository {
 
     fun getCursor(): Either<Failure, Cursor>
 
-    fun setCurrentRow(n: Int): Either<Failure, None>
-
-    fun getCurrentRow(): Either<Failure, Int>
-
     fun setDisplayingState(state: Boolean): Either<Failure, None>
 
     fun isDisplaying(): Either<Failure, Boolean>

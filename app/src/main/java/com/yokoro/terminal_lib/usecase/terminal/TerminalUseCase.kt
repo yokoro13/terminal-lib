@@ -12,8 +12,6 @@ class TerminalUseCase (
     private val getScreenSize: GetScreenSize,
     private val setTopRow: SetTopRow,
     private val getTopRow: GetTopRow,
-    private val setCurrentRow: SetCurrentRow,
-    private val getCurrentRow: GetCurrentRow,
     private val terminalBufferUseCase: ITerminalBufferUseCase
     ): ITerminalUseCase {
 
@@ -42,12 +40,5 @@ class TerminalUseCase (
     override suspend fun inputColor(cursor: Cursor, color: Int) {
         terminalBufferUseCase.setColor(cursor.x, cursor.y, color)
     }
-
-    override suspend fun setCurrentRow(n: Int) {
-        setCurrentRow.run(SetCurrentRow.Params(n))
-    }
-
-    override suspend fun getCurrentRow(): Int =
-        getCurrentRow.run(None).getOrElse { throw IllegalArgumentException("") }
 
 }
