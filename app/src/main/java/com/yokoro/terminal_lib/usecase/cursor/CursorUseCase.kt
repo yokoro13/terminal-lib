@@ -7,7 +7,9 @@ import com.yokoro.terminal_lib.entity.ScreenSize
 
 class CursorUseCase (
     private val setCursor: SetCursor,
-    private val getCursor: GetCursor
+    private val getCursor: GetCursor,
+    private val setDisplayingState: SetDisplayingState,
+    private val isDisplaying: IsDisplaying
     ): ICursorUseCase {
 
     override suspend fun setCursor(x: Int, y: Int) {
@@ -29,6 +31,13 @@ class CursorUseCase (
     override suspend fun moveLeft(cursor: Cursor, ss: ScreenSize, n: Int) {
         setCursor.run(SetCursor.Params(getCursor().x - n, getCursor().y))
     }
+
+    override suspend fun setDisplayingState(state: Boolean) {
+        setDisplayingState.run(SetDisplayingState.Params(state))
+    }
+
+    override suspend fun isDisplaying(): Boolean =
+        isDisplaying.run(None).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun getCursor(): Cursor =
         getCursor.run(None).getOrElse { throw IllegalArgumentException("") }

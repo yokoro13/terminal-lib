@@ -67,4 +67,8 @@ interface ITerminalRepository {
 
     fun getCurrentRow(): Either<Failure, Int>
 
+    fun setDisplayingState(state: Boolean): Either<Failure, None>
+
+    fun isDisplaying(): Either<Failure, Boolean>
+
 }

@@ -10,4 +10,6 @@ interface ICursorUseCase {
     suspend fun moveDown(cursor: Cursor, ss: ScreenSize, n: Int)
     suspend fun moveRight(cursor: Cursor, ss: ScreenSize, n: Int)
     suspend fun moveLeft(cursor: Cursor, ss: ScreenSize, n: Int)
+    suspend fun setDisplayingState(state: Boolean)
+    suspend fun isDisplaying(): Boolean
 }
