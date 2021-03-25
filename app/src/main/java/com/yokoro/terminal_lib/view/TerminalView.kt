@@ -12,41 +12,74 @@ import android.view.View
 import android.view.inputmethod.BaseInputConnection
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
-import com.yokoro.terminal_lib.entity.Terminal
+import android.view.inputmethod.InputMethodManager
+import com.yokoro.terminal_lib.repository.TerminalRepository
+import com.yokoro.terminal_lib.usecase.cursor.*
+import com.yokoro.terminal_lib.usecase.escapesequence.EscapeSequenceUseCase
+import com.yokoro.terminal_lib.usecase.screen.ScreenUseCase
+import com.yokoro.terminal_lib.usecase.terminal.*
+import com.yokoro.terminal_lib.usecase.terminalbuffer.*
+import com.yokoro.terminal_lib.viewmodel.TerminalViewModel
+import kotlinx.coroutines.runBlocking
 import kotlin.math.abs
 
 
 class TerminalView : View {
-
-    private var inputListener: InputListener? = null
-    private var gestureListener: GestureListener? = null
-
-    lateinit var term: Terminal
-
     private var textSize: Int = 25
 
-    var layoutBottom: Int = 0
+    // TODO 依存性の注入をどうにかする
+    private val terminalRepository: TerminalRepository = TerminalRepository()
+    private val terminalBufferUseCase = TerminalBufferUseCase(
+        AddNewRow(terminalRepository),
+        GetTerminalBuffer(terminalRepository),
+        SetText(terminalRepository),
+        SetColor(terminalRepository)
+    )
+
+    private val cursorUseCase = CursorUseCase(
+        SetCursor(terminalRepository),
+        GetCursor(terminalRepository),
+        SetDisplayingState(terminalRepository),
+        IsDisplaying(terminalRepository)
+    )
+
+    private val terminalUseCase = TerminalUseCase(
+        CreateTerminal(terminalRepository),
+        Resize(terminalRepository),
+        GetScreenSize(terminalRepository),
+        SetTopRow(terminalRepository),
+        GetTopRow(terminalRepository),
+        terminalBufferUseCase
+    )
+
+    private val screenUseCase = ScreenUseCase(
+        terminalBufferUseCase,
+        terminalUseCase,
+        cursorUseCase
+    )
+
+    private val escapeSequenceUseCase = EscapeSequenceUseCase(
+        GetScreenSize(terminalRepository),
+        GetTopRow(terminalRepository),
+        SetTopRow(terminalRepository),
+        cursorUseCase,
+        terminalBufferUseCase
+    )
+
+    private val viewModel: TerminalViewModel = TerminalViewModel(
+        escapeSequenceUseCase,
+        terminalUseCase,
+        terminalBufferUseCase,
+        screenUseCase,
+        cursorUseCase
+    )
 
     private var terminalRenderer: TerminalRenderer = TerminalRenderer(textSize)
-
-    set(width) {
-        field = width / terminalRenderer.fontWidth
-    }
-    var screenRowSize: Int = 0
-    set(height) {
-        field = (height-100) / terminalRenderer.fontHeight - 1
-    }
-
-    private var oldY = 0
-
-    var keyboardHeight: Int = 0
-    var isShowingKeyboard: Boolean =  false
-
-    private var isDisplaying = false        // 画面更新中はtrue
 
     constructor(context: Context?): super(context) {
         focusable()
     }
+
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         focusable()
     }
@@ -65,48 +98,61 @@ class TerminalView : View {
     }
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        if(gestureListener != null) {
-            when (event?.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    oldY = event.rawY.toInt()
-                    gestureListener?.onDown()
-                    return true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    gestureListener?.onMove()
-                    if (oldY > event.rawY) {
-                        scrollDown()
+        when (event?.action) {
+            MotionEvent.ACTION_DOWN -> {
+                viewModel.touchedY = event.rawY.toInt()
+                showKeyboard()
+                // TODO resize
+                return true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                hideKeyboard()
+                // TODO resize
+                if (viewModel.touchedY > event.rawY) {
+                    runBlocking {
+                        viewModel.scrollDown()
                     }
-                    if (oldY < event.rawY) {
-                        scrollUp()
+                }
+                if (viewModel.touchedY < event.rawY) {
+                    runBlocking {
+                        viewModel.scrollUp()
                     }
                 }
-                else -> {
-                }
+                invalidate()
+            }
+            else -> {
             }
         }
+
         return super.dispatchTouchEvent(event)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         val dispatchFirst = super.dispatchKeyEvent(event)
-
         if (event.action == KeyEvent.ACTION_UP){
-            // 入力を通知
-
-            if(inputListener != null) {
-                inputListener?.onKey(event.unicodeChar.toChar())
-            }
+            viewModel.inputText(event.unicodeChar.toChar())
         }
         return dispatchFirst
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (!isDisplaying) {
-            isDisplaying = true
-            val keyboard = if (isShowingKeyboard) keyboardHeight else 0
-            terminalRenderer.render(term, canvas, term.topRow, cursor, cursorIsInScreen(), paddingBottom, keyboard)
-            isDisplaying = false
+        if (!viewModel.isUpdatingScreen) {
+            runBlocking {
+
+                viewModel.isUpdatingScreen = true
+                val keyboard =
+                    if (viewModel.isShowingKeyboard) terminalRenderer.keyboardHeight else 0
+
+                terminalRenderer.render(
+                    viewModel.getTerminalBuffer(),
+                    viewModel.getTopRow(),
+                    viewModel.getScreenSize(),
+                    viewModel.getCursor(),
+                    canvas,
+                    paddingBottom,
+                    keyboard)
+                viewModel.isUpdatingScreen = false
+            }
         }
     }
 
@@ -115,55 +161,27 @@ class TerminalView : View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         resolveSize(widthMeasureSpec, heightMeasureSpec)
 
-        layoutBottom = MeasureSpec.getSize(heightMeasureSpec)
+        terminalRenderer.layoutBottom = MeasureSpec.getSize(heightMeasureSpec)
 
         viewTreeObserver.addOnGlobalLayoutListener {
             val rect = Rect()
             getWindowVisibleDisplayFrame(rect)
-            isShowingKeyboard = layoutBottom > rect.bottom
-            keyboardHeight = if (isShowingKeyboard) abs((layoutBottom - rect.bottom)) else 0
-            layoutBottom = rect.bottom
+            viewModel.isShowingKeyboard = terminalRenderer.layoutBottom > rect.bottom
+            terminalRenderer.keyboardHeight = if (viewModel.isShowingKeyboard) abs((terminalRenderer.layoutBottom - rect.bottom)) else 0
+            terminalRenderer.layoutBottom = rect.bottom
         }
     }
 
-    fun setInputListener(listener: InputListener){
-        this.inputListener = listener
+    fun addText(text: String) {
+        text.toCharArray().forEach { viewModel.inputText(it) }
     }
 
-    fun setGestureListener(listener: GestureListener){
-        this.gestureListener = listener
+    fun toggleCtlBtn() {
+
     }
 
-    private fun scrollDown() {
-        if (term.totalLines > term.screenRowSize) {
-            // 一番下の行までしか表示させない
-            if (term.topRow + term.screenRowSize < term.totalLines) {
-                //表示する一番上の行を１つ下に
-                term.topRow++
-                if (cursorIsInScreen()) {
-                    setEditable(true)
-                    cursor.y = term.currentRow - term.topRow
-                } else {
-                    setEditable(false)
-                }
-                invalidate()
-            }
-        }
-    }
-
-    private fun scrollUp() {
-        if (term.totalLines > term.screenRowSize) {
-            //表示する一番上の行を１つ上に
-            term.topRow--
-            // カーソルが画面内にある
-            if (cursorIsInScreen()) {
-                setEditable(true)
-                cursor.y = term.currentRow - term.topRow
-            } else { //画面外
-                setEditable(false)
-            }
-            invalidate()
-        }
+    fun setTitleBarSize(metrics: Float){
+        terminalRenderer.titleBarHeight = 20 * metrics.toInt() + paddingBottom
     }
 
     private fun focusable() {
@@ -172,17 +190,27 @@ class TerminalView : View {
         requestFocus()
     }
 
-    // 画面の編集許可
-    private fun setEditable(editable: Boolean) {
-        if (editable) {
-            focusable()
-        } else {
-            isFocusable = false
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+            viewModel.inputText('\u0008')
+            invalidate()
+            return true
         }
+        return false
     }
 
-    fun setTitleBarSize(metrics: Float){
-        terminalRenderer.titleBar = 20 * metrics.toInt() + paddingBottom
+    // キーボードを表示させる
+    private fun showKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        isFocusable = true
+        isFocusableInTouchMode = true
+        requestFocus()
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 
+    //　キーボードを隠す
+    private fun hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 }
