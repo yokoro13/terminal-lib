@@ -5,7 +5,7 @@ package com.yokoro.terminal_lib.entity
  * @param screenColumnSize : 画面の横幅
  * @param screenRowSize : 画面の縦幅
  */
-class Terminal(
+data class Terminal(
     var screenSize: ScreenSize
 ) {
     var cursor: Cursor = Cursor(0, 0)
