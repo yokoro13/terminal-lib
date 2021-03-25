@@ -141,6 +141,15 @@ class TerminalRepository: ITerminalRepository {
     override fun getCursor(): Either<Failure, Cursor> =
         getOrError(terminal.cursor)
 
+    override fun setCurrentRow(n: Int): Either<Failure, None> =
+        handleOrError(None) {
+            terminal.currentRow = n
+        }
+
+
+    override fun getCurrentRow(): Either<Failure, Int> =
+        getOrError(terminal.currentRow)
+
     private fun setX(x: Int): Cursor =
         when {
             (x < 0) -> Cursor(0, terminal.cursor.y)

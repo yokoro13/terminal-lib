@@ -17,4 +17,8 @@ interface ITerminalUseCase {
     suspend fun inputText(cursor: Cursor, text: Char)
 
     suspend fun inputColor(cursor: Cursor, color: Int)
+
+    suspend fun setCurrentRow(n: Int)
+
+    suspend fun getCurrentRow(): Int
 }

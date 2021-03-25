@@ -11,6 +11,7 @@ class Terminal(
     var cursor: Cursor = Cursor(0, 0)
     var terminalBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
     var topRow: Int = 0
+    var currentRow: Int = 0
     set(value) {
         if (value < 0) {
             field = 0
