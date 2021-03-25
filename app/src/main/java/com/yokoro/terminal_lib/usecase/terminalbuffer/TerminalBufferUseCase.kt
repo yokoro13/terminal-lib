@@ -3,8 +3,6 @@ package com.yokoro.terminal_lib.usecase.terminalbuffer
 import arrow.core.None
 import arrow.core.getOrElse
 import com.yokoro.terminal_lib.entity.TerminalRow
-import com.yokoro.terminal_lib.usecase.terminalbuffer.SetColor
-import com.yokoro.terminal_lib.usecase.terminalbuffer.SetText
 import java.lang.IllegalArgumentException
 
 class TerminalBufferUseCase(
