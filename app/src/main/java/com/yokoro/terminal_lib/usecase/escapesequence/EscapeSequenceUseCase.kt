@@ -1,7 +1,6 @@
 package com.yokoro.terminal_lib.usecase.escapesequence
 
-import arrow.core.None
-import arrow.core.getOrElse
+import com.yokoro.terminal_lib.core.UseCase.None
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.TerminalRow
@@ -20,13 +19,13 @@ class EscapeSequenceUseCase(
 ) : IEscapeSequenceUseCase {
 
     private suspend fun getScreenSize(): ScreenSize =
-        getScreenSize.run(None).getOrElse { throw IllegalArgumentException("") }
+        getScreenSize.run(None()).getOrElse { throw IllegalArgumentException("") }
 
     private suspend fun getTerminalBuffer(): ArrayList<TerminalRow> =
         terminalBufferUseCase.getTerminalBuffer()
 
     private suspend fun getTopRow(): Int =
-        getTopRow.run(None).getOrElse { throw IllegalArgumentException("") }
+        getTopRow.run(None()).getOrElse { throw IllegalArgumentException("") }
 
     private suspend fun getCurrentRow(currCursor: Cursor): Int =
         getTopRow() + currCursor.y

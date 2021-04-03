@@ -1,6 +1,5 @@
 package com.yokoro.terminal_lib.core
 
-import arrow.core.Either
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -13,4 +12,6 @@ abstract class UseCase<out Type, in Params> where Type: Any{
         val job = GlobalScope.async(Dispatchers.IO) { run(params) }
         GlobalScope.launch(Dispatchers.Main) { onResult(job.await()) }
     }
+
+    class None
 }

@@ -1,10 +1,9 @@
 package com.yokoro.terminal_lib.repository
 
-import arrow.core.Either
-import arrow.core.Left
-import arrow.core.None
-import arrow.core.Right
+import com.yokoro.terminal_lib.core.Either
+import com.yokoro.terminal_lib.core.Either.*
 import com.yokoro.terminal_lib.core.Failure
+import com.yokoro.terminal_lib.core.UseCase.None
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
@@ -35,7 +34,7 @@ class TerminalRepository: ITerminalRepository {
     override fun createTerminal(ss: ScreenSize): Either<Failure, None> {
         this.terminal = Terminal(ss)
         addRow(false)
-        return Right(None)
+        return Right(None())
     }
 
     override fun getScreenSize(): Either<Failure, ScreenSize> =
@@ -128,12 +127,12 @@ class TerminalRepository: ITerminalRepository {
         getOrError(terminal.topRow)
 
     override fun setTopRow(n: Int): Either<Failure, None> =
-        handleOrError(None) {
+        handleOrError(None()) {
             terminal.topRow = n
         }
 
     override fun setCursor(x: Int, y: Int): Either<Failure, None> =
-        handleOrError(None) {
+        handleOrError(None()) {
             setX(x)
             setY(y)
         }
@@ -142,7 +141,7 @@ class TerminalRepository: ITerminalRepository {
         getOrError(terminal.cursor)
 
     override fun setDisplayingState(state: Boolean): Either<Failure, None> =
-        handleOrError(None) {
+        handleOrError(None()) {
             terminal.cursor.isDisplaying = state
         }
 

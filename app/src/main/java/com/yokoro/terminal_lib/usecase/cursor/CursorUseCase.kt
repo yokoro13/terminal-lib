@@ -1,7 +1,7 @@
 package com.yokoro.terminal_lib.usecase.cursor
 
-import arrow.core.None
-import arrow.core.getOrElse
+import com.yokoro.terminal_lib.core.getOrElse
+import com.yokoro.terminal_lib.core.UseCase.None
 import com.yokoro.terminal_lib.entity.Cursor
 import com.yokoro.terminal_lib.entity.ScreenSize
 
@@ -37,8 +37,8 @@ class CursorUseCase (
     }
 
     override suspend fun isDisplaying(): Boolean =
-        isDisplaying.run(None).getOrElse { throw IllegalArgumentException("") }
+        isDisplaying.run(None()).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun getCursor(): Cursor =
-        getCursor.run(None).getOrElse { throw IllegalArgumentException("") }
+        getCursor.run(None()).getOrElse { throw IllegalArgumentException("") }
 }

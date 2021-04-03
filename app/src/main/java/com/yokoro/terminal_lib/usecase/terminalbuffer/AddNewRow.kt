@@ -3,10 +3,8 @@ package com.yokoro.terminal_lib.usecase.terminalbuffer
 import com.yokoro.terminal_lib.core.UseCase
 import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.repository.ITerminalRepository
-import javax.inject.Inject
 
-class AddNewRow
-@Inject constructor(
+class AddNewRow constructor(
     private val ITerminalRepository: ITerminalRepository
     ): UseCase<Terminal, AddNewRow.Params>() {
 

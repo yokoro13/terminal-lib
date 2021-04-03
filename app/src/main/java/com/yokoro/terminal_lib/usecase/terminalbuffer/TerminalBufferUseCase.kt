@@ -1,7 +1,6 @@
 package com.yokoro.terminal_lib.usecase.terminalbuffer
 
-import arrow.core.None
-import arrow.core.getOrElse
+import com.yokoro.terminal_lib.core.UseCase.None
 import com.yokoro.terminal_lib.entity.TerminalRow
 import java.lang.IllegalArgumentException
 
@@ -16,7 +15,7 @@ class TerminalBufferUseCase(
     }
 
     override suspend fun getTerminalBuffer(): ArrayList<TerminalRow> =
-        getTerminalBuffer.run(None).getOrElse { throw IllegalArgumentException("") }
+        getTerminalBuffer.run(None()).getOrElse { throw IllegalArgumentException("") }
 
     override suspend fun setText(x: Int, y: Int, text: Char) {
         setText.run(SetText.Params(x, y, text))
