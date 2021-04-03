@@ -22,12 +22,13 @@ class TerminalViewModel (
     private val cursorUseCase: ICursorUseCase
     ): ViewModel() {
 
-    // TODO View の状態を書く
     var isShowingKeyboard: Boolean =  false
 
     var isUpdatingScreen = false        // 画面更新中はtrue
 
     var touchedY = 0
+
+    private var escString: String = ""
 
     suspend fun getCursor() = cursorUseCase.getCursor()
 
@@ -37,21 +38,55 @@ class TerminalViewModel (
 
     suspend fun getScreenSize() = terminalUseCases.getScreenSize()
 
-    private fun isEscapeSequence(text: Char): Boolean {
-        // TODO implement
-        if (text != '\u001b') {
-            return false
-        }
-        return true
+
+    fun runOperationCode(code: Char) {
+
     }
 
-    fun inputText(text: Char) {
-        if (isEscapeSequence(text)) {
-            return
-        }
+    fun writeToBufferAtCursor(text: Char) {
         runBlocking {
             terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCases.getTopRow(), text)
         }
+    }
+
+    fun runEscapeSequence(text: String) {
+        text.forEach { checkEscapeSequenceCharAndRun(it) }
+    }
+
+    fun checkEscapeSequenceCharAndRun(text: Char) {
+        escString += text
+        if (!isEscapeSequence(escString)) {
+            invalidEscapeSequence()
+            return
+        }
+
+        if (escString.matches("$[A-HJKSTfm]".toRegex())) {
+            escapeSequence(escString)
+        }
+    }
+
+    private fun isEscapeSequence(sequence: String): Boolean {
+        return sequence.matches("(^\\u001b)".toRegex())
+                || sequence.matches("(^\\u001b\\[)".toRegex())
+                || sequence.matches("(^\\u001b\\[)(\\d*)".toRegex())
+                || sequence.matches("(^\\u001b\\[)(\\d*);".toRegex())
+                || sequence.matches("(^\\u001b\\[)(\\d*);(\\d*)".toRegex())
+                || sequence.matches("(^\\u001b\\[)(\\d*)([A-GJKSTm])".toRegex())
+                || sequence.matches("(^\\u001b\\[)(\\d*);(\\d*)([Hf])".toRegex())
+    }
+
+    private fun invalidEscapeSequence(){
+        escString.forEach { writeToBufferAtCursor(it) }
+        escString = ""
+    }
+
+    private fun escapeSequence(sequence: String) {
+        when (sequence.last()) {
+            'A' -> {
+
+            }
+        }
+
     }
 
     suspend fun changeScreenSize(screenSize: ScreenSize) {
