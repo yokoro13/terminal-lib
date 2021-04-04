@@ -1,6 +1,6 @@
 # terminal-lib
 
-This library provides terminal features for multi platforms.
+This library provides terminal features to multi platforms.
 
 (such as Screen, Cursor and Escape Sequence)
 
