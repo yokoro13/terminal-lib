@@ -1,14 +1,16 @@
-package com.yokoro.terminal_lib.usecase.escapesequence
+package usecase.escapesequence
 
+import com.yokoro.terminal_lib.usecase.escapesequence.IEscapeSequenceUseCase
 import core.UseCase.None
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
-import com.yokoro.terminal_lib.entity.TerminalRow
-import com.yokoro.terminal_lib.usecase.cursor.ICursorUseCase
-import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
-import com.yokoro.terminal_lib.usecase.terminal.GetScreenSize
-import com.yokoro.terminal_lib.usecase.terminal.GetTopRow
-import com.yokoro.terminal_lib.usecase.terminal.SetTopRow
+import entity.Cursor
+import entity.ScreenSize
+import entity.TerminalRow
+import usecase.cursor.ICursorUseCase
+import usecase.terminalbuffer.ITerminalBufferUseCase
+import usecase.terminal.GetScreenSize
+import usecase.terminal.GetTopRow
+import usecase.terminal.SetTopRow
+import core.getOrElse
 
 class EscapeSequenceUseCase(
     private val getScreenSize: GetScreenSize,

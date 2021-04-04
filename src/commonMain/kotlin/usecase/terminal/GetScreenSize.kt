@@ -1,16 +1,14 @@
-package com.yokoro.terminal_lib.usecase.terminal
+package usecase.terminal
 
-import arrow.core.None
 import core.UseCase
-import com.yokoro.terminal_lib.entity.ScreenSize
+import core.UseCase.None
+import entity.ScreenSize
 import com.yokoro.terminal_lib.repository.ITerminalRepository
-import javax.inject.Inject
 
-class GetScreenSize
-@Inject constructor(
+class GetScreenSize constructor(
     private val ITerminalRepository: ITerminalRepository
 ): UseCase<ScreenSize, None>() {
 
-    override suspend fun run(params: None) = ITerminalRepository.getScreenSize()
+    override fun run(params: None) = ITerminalRepository.getScreenSize()
 
 }

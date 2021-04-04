@@ -1,12 +1,12 @@
 package com.yokoro.terminal_lib.repository
 
-import arrow.core.Either
-import arrow.core.None
 import core.Failure
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
+import entity.Cursor
+import entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
-import com.yokoro.terminal_lib.entity.TerminalRow
+import core.Either
+import core.UseCase.None
+import entity.TerminalRow
 
 interface ITerminalRepository {
 
@@ -41,9 +41,8 @@ interface ITerminalRepository {
     fun setColor(x: Int, y: Int, color: Int): Either<Failure, Terminal>
 
     /**
-     * get row CharArray at y
+     * get terminalBuffer
      *
-     * @param y : row
      * @return row CharArray
      */
     fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalRow>>

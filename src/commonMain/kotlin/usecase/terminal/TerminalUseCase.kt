@@ -1,9 +1,10 @@
-package com.yokoro.terminal_lib.usecase.terminal
+package usecase.terminal
 
 import core.UseCase.None
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
-import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
+import entity.Cursor
+import entity.ScreenSize
+import usecase.terminalbuffer.ITerminalBufferUseCase
+import core.getOrElse
 
 class TerminalUseCase (
     private val createTerminal: CreateTerminal,

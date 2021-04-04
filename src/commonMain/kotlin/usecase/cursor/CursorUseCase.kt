@@ -1,8 +1,9 @@
-package com.yokoro.terminal_lib.usecase.cursor
+package usecase.cursor
 
 import core.UseCase.None
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
+import core.getOrElse
+import entity.Cursor
+import entity.ScreenSize
 
 class CursorUseCase (
     private val setCursor: SetCursor,

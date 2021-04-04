@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.screen
+package usecase.screen
 
 interface IScreenUseCase {
     suspend fun scrollUp()

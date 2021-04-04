@@ -1,13 +1,14 @@
-package com.yokoro.terminal_lib.repository
+package repository
 
 import core.Either
 import core.Either.*
 import core.Failure
 import core.UseCase.None
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
+import entity.Cursor
+import entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
-import com.yokoro.terminal_lib.entity.TerminalRow
+import com.yokoro.terminal_lib.repository.ITerminalRepository
+import entity.TerminalRow
 
 /**
  * データの保存，取得をおこなう

@@ -1,7 +1,7 @@
-package com.yokoro.terminal_lib.usecase.terminal
+package usecase.terminal
 
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
+import entity.Cursor
+import entity.ScreenSize
 
 interface ITerminalUseCase {
     suspend fun createTerminal(screenSize: ScreenSize)

@@ -1,6 +1,6 @@
 package com.yokoro.terminal_lib.usecase.escapesequence
 
-import com.yokoro.terminal_lib.entity.Cursor
+import entity.Cursor
 
 interface IEscapeSequenceUseCase {
     suspend fun moveRight(cursor: Cursor, n: Int)

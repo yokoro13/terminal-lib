@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.entity
+package entity
 
 /**
  * １文字を表すクラス

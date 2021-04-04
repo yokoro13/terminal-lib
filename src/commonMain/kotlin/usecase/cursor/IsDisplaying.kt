@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.cursor
+package usecase.cursor
 
 import core.UseCase
 import core.UseCase.None
@@ -8,6 +8,6 @@ class IsDisplaying constructor(
     private val terminalRepository: ITerminalRepository
     ): UseCase<Boolean, None>() {
 
-    override suspend fun run(params: None) = terminalRepository.isDisplaying()
+    override fun run(params: None) = terminalRepository.isDisplaying()
 
 }

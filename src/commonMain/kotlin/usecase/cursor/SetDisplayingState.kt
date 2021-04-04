@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.cursor
+package usecase.cursor
 
 import core.UseCase
 import core.UseCase.None
@@ -8,7 +8,7 @@ class SetDisplayingState constructor(
     private val terminalRepository: ITerminalRepository
     ): UseCase<None, SetDisplayingState.Params>() {
 
-    override suspend fun run(params: Params) = terminalRepository.setDisplayingState(params.state)
+    override fun run(params: Params) = terminalRepository.setDisplayingState(params.state)
 
     data class Params(val state: Boolean)
 }

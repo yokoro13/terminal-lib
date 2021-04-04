@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.cursor
+package usecase.cursor
 
 import core.UseCase
 import core.UseCase.None
@@ -8,7 +8,7 @@ class SetCursor constructor(
     private val terminalRepository: ITerminalRepository
     ): UseCase<None, SetCursor.Params>() {
 
-    override suspend fun run(params: Params) = terminalRepository.setCursor(params.x, params.y)
+    override fun run(params: Params) = terminalRepository.setCursor(params.x, params.y)
 
     data class Params(val x: Int, val y: Int)
 }

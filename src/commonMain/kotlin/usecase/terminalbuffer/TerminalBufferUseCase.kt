@@ -1,7 +1,8 @@
-package com.yokoro.terminal_lib.usecase.terminalbuffer
+package usecase.terminalbuffer
 
 import core.UseCase.None
-import com.yokoro.terminal_lib.entity.TerminalRow
+import core.getOrElse
+import entity.TerminalRow
 
 class TerminalBufferUseCase(
     private val addNewRow: AddNewRow,

@@ -1,11 +1,11 @@
 package viewmodel
 
-import com.yokoro.terminal_lib.entity.ScreenSize
-import com.yokoro.terminal_lib.usecase.cursor.ICursorUseCase
+import entity.ScreenSize
+import usecase.cursor.ICursorUseCase
 import com.yokoro.terminal_lib.usecase.escapesequence.IEscapeSequenceUseCase
-import com.yokoro.terminal_lib.usecase.screen.IScreenUseCase
-import com.yokoro.terminal_lib.usecase.terminal.ITerminalUseCase
-import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
+import usecase.screen.IScreenUseCase
+import usecase.terminal.ITerminalUseCase
+import usecase.terminalbuffer.ITerminalBufferUseCase
 
 /**
  * プラットフォーム問わず必要な処理を記述
@@ -47,10 +47,8 @@ class TerminalViewModel (
         }
     }
 
-    fun writeCharAtCursor(text: Char) {
-        runBlocking {
-            terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCases.getTopRow(), text)
-        }
+    suspend fun writeCharAtCursor(text: Char) {
+        terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCases.getTopRow(), text)
     }
 
     suspend fun runEscapeSequence(text: String) {
@@ -80,7 +78,7 @@ class TerminalViewModel (
                 || sequence.matches("(^\\u001b\\[)(\\d*);(\\d*)([Hf])".toRegex())
     }
 
-    private fun invalidEscapeSequence(){
+    private suspend fun invalidEscapeSequence(){
         escString.forEach { writeCharAtCursor(it) }
         escString = ""
     }
@@ -94,14 +92,14 @@ class TerminalViewModel (
 
         if (length != 2) {
             if (mode != 'H') {
-                n = Integer.parseInt(sequence.substring(1, length - 1))
+                n = sequence.substring(1, length - 1).toInt()
             } else {
                 semicolonPos = sequence.indexOf(";")
                 if (semicolonPos != 1) {
-                    n = Integer.parseInt(sequence.substring(1, semicolonPos))
+                    n = sequence.substring(1, semicolonPos).toInt()
                 }
                 if (sequence[semicolonPos + 1] != 'H' || sequence[semicolonPos + 1] != 'f') {
-                    m = Integer.parseInt(sequence.substring(semicolonPos + 1, length - 1))
+                    m = sequence.substring(semicolonPos + 1, length - 1).toInt()
                 }
             }
         }

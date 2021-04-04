@@ -1,7 +1,7 @@
-package com.yokoro.terminal_lib.usecase.cursor
+package usecase.cursor
 
-import com.yokoro.terminal_lib.entity.Cursor
-import com.yokoro.terminal_lib.entity.ScreenSize
+import entity.Cursor
+import entity.ScreenSize
 
 interface ICursorUseCase {
     suspend fun setCursor(x: Int, y: Int)

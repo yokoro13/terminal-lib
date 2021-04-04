@@ -1,8 +1,8 @@
-package com.yokoro.terminal_lib.usecase.screen
+package usecase.screen
 
-import com.yokoro.terminal_lib.usecase.cursor.ICursorUseCase
-import com.yokoro.terminal_lib.usecase.terminal.ITerminalUseCase
-import com.yokoro.terminal_lib.usecase.terminalbuffer.ITerminalBufferUseCase
+import usecase.cursor.ICursorUseCase
+import usecase.terminal.ITerminalUseCase
+import usecase.terminalbuffer.ITerminalBufferUseCase
 
 class ScreenUseCase(
     private val terminalBufferUseCase: ITerminalBufferUseCase,

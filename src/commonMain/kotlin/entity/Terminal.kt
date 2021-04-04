@@ -1,5 +1,9 @@
 package com.yokoro.terminal_lib.entity
 
+import entity.Cursor
+import entity.ScreenSize
+import entity.TerminalRow
+
 /**
  * ターミナルの画面情報を扱う
  * @param screenColumnSize : 画面の横幅

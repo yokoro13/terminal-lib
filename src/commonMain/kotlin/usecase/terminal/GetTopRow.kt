@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.terminal
+package usecase.terminal
 
 import core.UseCase
 import core.UseCase.None
@@ -8,5 +8,5 @@ class GetTopRow constructor(
     private val ITerminalRepository: ITerminalRepository
     ): UseCase<Int, None>() {
 
-    override suspend fun run(params: None) = ITerminalRepository.getTopRow()
+    override fun run(params: None) = ITerminalRepository.getTopRow()
 }

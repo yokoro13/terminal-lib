@@ -1,6 +1,6 @@
-package com.yokoro.terminal_lib.usecase.terminalbuffer
+package usecase.terminalbuffer
 
-import com.yokoro.terminal_lib.entity.TerminalRow
+import entity.TerminalRow
 
 /**
  * TerminalBuffer に関する UseCase を定義

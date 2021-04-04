@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.usecase.terminalbuffer
+package usecase.terminalbuffer
 
 import core.UseCase
 import com.yokoro.terminal_lib.entity.Terminal
@@ -10,5 +10,5 @@ class SetColor constructor(
 
     data class Params(val x: Int, val y: Int, val color: Int)
 
-    override suspend fun run(params: Params) = ITerminalRepository.setColor(params.x, params.y, params.color)
+    override fun run(params: Params) = ITerminalRepository.setColor(params.x, params.y, params.color)
 }
