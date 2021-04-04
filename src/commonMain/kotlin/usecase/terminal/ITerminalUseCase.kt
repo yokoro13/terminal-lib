@@ -4,18 +4,18 @@ import entity.Cursor
 import entity.ScreenSize
 
 interface ITerminalUseCase {
-    suspend fun createTerminal(screenSize: ScreenSize)
+    fun createTerminal(screenSize: ScreenSize)
 
-    suspend fun resize(newScreenSize: ScreenSize)
+    fun resize(newScreenSize: ScreenSize)
 
-    suspend fun getScreenSize(): ScreenSize
+    fun getScreenSize(): ScreenSize
 
-    suspend fun getTopRow(): Int
+    fun getTopRow(): Int
 
-    suspend fun setTopRow(n: Int)
+    fun setTopRow(n: Int)
 
-    suspend fun inputText(cursor: Cursor, text: Char)
+    fun inputText(cursor: Cursor, text: Char)
 
-    suspend fun inputColor(cursor: Cursor, color: Int)
+    fun inputColor(cursor: Cursor, color: Int)
 
 }

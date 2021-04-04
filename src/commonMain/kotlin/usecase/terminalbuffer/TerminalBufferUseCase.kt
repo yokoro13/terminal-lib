@@ -10,18 +10,18 @@ class TerminalBufferUseCase(
     private val setText: SetText,
     private val setColor: SetColor
 ): ITerminalBufferUseCase {
-    override suspend fun addNewRow(warp: Boolean) {
+    override fun addNewRow(warp: Boolean) {
         addNewRow.run(AddNewRow.Params(warp))
     }
 
-    override suspend fun getTerminalBuffer(): ArrayList<TerminalRow> =
+    override fun getTerminalBuffer(): ArrayList<TerminalRow> =
         getTerminalBuffer.run(None()).getOrElse { throw IllegalArgumentException("") }
 
-    override suspend fun setText(x: Int, y: Int, text: Char) {
+    override fun setText(x: Int, y: Int, text: Char) {
         setText.run(SetText.Params(x, y, text))
     }
 
-    override suspend fun setColor(x: Int, y: Int, color: Int) {
+    override fun setColor(x: Int, y: Int, color: Int) {
         setColor.run(SetColor.Params(x, y, color))
     }
 }

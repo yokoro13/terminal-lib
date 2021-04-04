@@ -7,11 +7,11 @@ import entity.TerminalRow
  */
 interface ITerminalBufferUseCase {
 
-    suspend fun addNewRow(warp: Boolean)
+    fun addNewRow(warp: Boolean)
 
-    suspend fun getTerminalBuffer(): ArrayList<TerminalRow>
+    fun getTerminalBuffer(): ArrayList<TerminalRow>
 
-    suspend fun setText(x: Int, y: Int, text: Char)
+    fun setText(x: Int, y: Int, text: Char)
 
-    suspend fun setColor(x: Int, y: Int, color: Int)
+    fun setColor(x: Int, y: Int, color: Int)
 }

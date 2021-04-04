@@ -12,33 +12,33 @@ class CursorUseCase (
     private val isDisplaying: IsDisplaying
     ): ICursorUseCase {
 
-    override suspend fun setCursor(x: Int, y: Int) {
+    override fun setCursor(x: Int, y: Int) {
         setCursor.run(SetCursor.Params(x, y))
     }
 
-    override suspend fun moveUp(cursor: Cursor, ss: ScreenSize, n: Int) {
+    override fun moveUp(cursor: Cursor, ss: ScreenSize, n: Int) {
         setCursor.run(SetCursor.Params(getCursor().x, getCursor().y - n))
     }
 
-    override suspend fun moveDown(cursor: Cursor, ss: ScreenSize, n: Int) {
+    override fun moveDown(cursor: Cursor, ss: ScreenSize, n: Int) {
         setCursor.run(SetCursor.Params(getCursor().x, getCursor().y + n))
     }
 
-    override suspend fun moveRight(cursor: Cursor, ss: ScreenSize, n: Int) {
+    override fun moveRight(cursor: Cursor, ss: ScreenSize, n: Int) {
         setCursor.run(SetCursor.Params(getCursor().x + n, getCursor().y))
     }
 
-    override suspend fun moveLeft(cursor: Cursor, ss: ScreenSize, n: Int) {
+    override fun moveLeft(cursor: Cursor, ss: ScreenSize, n: Int) {
         setCursor.run(SetCursor.Params(getCursor().x - n, getCursor().y))
     }
 
-    override suspend fun setDisplayingState(state: Boolean) {
+    override fun setDisplayingState(state: Boolean) {
         setDisplayingState.run(SetDisplayingState.Params(state))
     }
 
-    override suspend fun isDisplaying(): Boolean =
+    override fun isDisplaying(): Boolean =
         isDisplaying.run(None()).getOrElse { throw IllegalArgumentException("") }
 
-    override suspend fun getCursor(): Cursor =
+    override fun getCursor(): Cursor =
         getCursor.run(None()).getOrElse { throw IllegalArgumentException("") }
 }

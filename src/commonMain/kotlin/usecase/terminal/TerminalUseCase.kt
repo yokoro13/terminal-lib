@@ -15,29 +15,29 @@ class TerminalUseCase (
     private val terminalBufferUseCase: ITerminalBufferUseCase
     ): ITerminalUseCase {
 
-    override suspend fun createTerminal(screenSize: ScreenSize) {
+    override fun createTerminal(screenSize: ScreenSize) {
         createTerminal.run(CreateTerminal.Params(screenSize))
     }
 
-    override suspend fun resize(newScreenSize: ScreenSize) {
+    override fun resize(newScreenSize: ScreenSize) {
         resize.run(Resize.Params(newScreenSize))
     }
 
-    override suspend fun getScreenSize(): ScreenSize =
+    override fun getScreenSize(): ScreenSize =
         getScreenSize.run(None()).getOrElse { throw IllegalArgumentException("") }
 
-    override suspend fun getTopRow(): Int =
+    override fun getTopRow(): Int =
         getTopRow.run(None()).getOrElse { throw IllegalArgumentException("") }
 
-    override suspend fun setTopRow(n: Int) {
+    override fun setTopRow(n: Int) {
         setTopRow.run(SetTopRow.Params(n))
     }
 
-    override suspend fun inputText(cursor: Cursor, text: Char) {
+    override fun inputText(cursor: Cursor, text: Char) {
         terminalBufferUseCase.setText(cursor.x, cursor.y, text)
     }
 
-    override suspend fun inputColor(cursor: Cursor, color: Int) {
+    override fun inputColor(cursor: Cursor, color: Int) {
         terminalBufferUseCase.setColor(cursor.x, cursor.y, color)
     }
 

@@ -2,7 +2,7 @@ package viewmodel
 
 import entity.ScreenSize
 import usecase.cursor.ICursorUseCase
-import com.yokoro.terminal_lib.usecase.escapesequence.IEscapeSequenceUseCase
+import usecase.escapesequence.IEscapeSequenceUseCase
 import usecase.screen.IScreenUseCase
 import usecase.terminal.ITerminalUseCase
 import usecase.terminalbuffer.ITerminalBufferUseCase
@@ -28,15 +28,15 @@ class TerminalViewModel (
 
     private var escString: String = ""
 
-    suspend fun getCursor() = cursorUseCase.getCursor()
+    fun getCursor() = cursorUseCase.getCursor()
 
-    suspend fun getTerminalBuffer() = terminalBufferUseCase.getTerminalBuffer()
+    fun getTerminalBuffer() = terminalBufferUseCase.getTerminalBuffer()
 
-    suspend fun getTopRow() = terminalUseCases.getTopRow()
+    fun getTopRow() = terminalUseCases.getTopRow()
 
-    suspend fun getScreenSize() = terminalUseCases.getScreenSize()
+    fun getScreenSize() = terminalUseCases.getScreenSize()
 
-    suspend fun runOperationCode(code: Char) {
+    fun runOperationCode(code: Char) {
         when (code) {
             '\r' -> cursorUseCase.setCursor(0, getCursor().y)
             '\n' -> {
@@ -47,15 +47,15 @@ class TerminalViewModel (
         }
     }
 
-    suspend fun writeCharAtCursor(text: Char) {
+    fun writeCharAtCursor(text: Char) {
         terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCases.getTopRow(), text)
     }
 
-    suspend fun runEscapeSequence(text: String) {
+    fun runEscapeSequence(text: String) {
         text.forEach { checkEscapeSequenceCharAndRun(it) }
     }
 
-    suspend fun checkEscapeSequenceCharAndRun(text: Char) {
+    fun checkEscapeSequenceCharAndRun(text: Char) {
         escString += text
         if (!isEscapeSequence(escString)) {
             invalidEscapeSequence()
@@ -78,12 +78,12 @@ class TerminalViewModel (
                 || sequence.matches("(^\\u001b\\[)(\\d*);(\\d*)([Hf])".toRegex())
     }
 
-    private suspend fun invalidEscapeSequence(){
+    private fun invalidEscapeSequence(){
         escString.forEach { writeCharAtCursor(it) }
         escString = ""
     }
 
-    private suspend fun escapeSequence(sequence: String) {
+    private fun escapeSequence(sequence: String) {
         val length = sequence.length
         val mode = sequence[length - 1]
         var n = 1
@@ -121,15 +121,15 @@ class TerminalViewModel (
         }
     }
 
-    suspend fun changeScreenSize(screenSize: ScreenSize) {
+    fun changeScreenSize(screenSize: ScreenSize) {
         terminalUseCases.resize(screenSize)
     }
 
-    suspend fun scrollDown() {
+    fun scrollDown() {
         screenUseCase.scrollDown()
     }
 
-    suspend fun scrollUp() {
+    fun scrollUp() {
         screenUseCase.scrollUp()
     }
 

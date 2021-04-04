@@ -1,6 +1,6 @@
 package usecase.screen
 
 interface IScreenUseCase {
-    suspend fun scrollUp()
-    suspend fun scrollDown()
+    fun scrollUp()
+    fun scrollDown()
 }

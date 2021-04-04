@@ -10,13 +10,13 @@ class ScreenUseCase(
     private val cursorUseCase: ICursorUseCase
     ): IScreenUseCase {
 
-    private suspend fun getBufferSize() = terminalBufferUseCase.getTerminalBuffer().size
+    private fun getBufferSize() = terminalBufferUseCase.getTerminalBuffer().size
 
-    private suspend fun getScreenSize() = terminalUseCase.getScreenSize()
+    private fun getScreenSize() = terminalUseCase.getScreenSize()
 
-    private suspend fun getCursor() = cursorUseCase.getCursor()
+    private fun getCursor() = cursorUseCase.getCursor()
 
-    override suspend fun scrollDown() {
+    override fun scrollDown() {
         if (terminalUseCase.getTopRow() + terminalUseCase.getScreenSize().rows < getBufferSize()) {
             //表示する一番上の行を１つ下に
             terminalUseCase.setTopRow(terminalUseCase.getTopRow()+1)
@@ -28,7 +28,7 @@ class ScreenUseCase(
         }
     }
 
-    override suspend fun scrollUp() {
+    override fun scrollUp() {
         if (getScreenSize().rows < getBufferSize()) {
             //表示する一番上の行を１つ上に
             terminalUseCase.setTopRow(terminalUseCase.getTopRow()-1)
