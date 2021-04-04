@@ -43,17 +43,17 @@ class TerminalViewModel (
 
     }
 
-    fun writeToBufferAtCursor(text: Char) {
+    fun writeCharAtCursor(text: Char) {
         runBlocking {
             terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCases.getTopRow(), text)
         }
     }
 
-    fun runEscapeSequence(text: String) {
+    suspend fun runEscapeSequence(text: String) {
         text.forEach { checkEscapeSequenceCharAndRun(it) }
     }
 
-    fun checkEscapeSequenceCharAndRun(text: Char) {
+    suspend fun checkEscapeSequenceCharAndRun(text: Char) {
         escString += text
         if (!isEscapeSequence(escString)) {
             invalidEscapeSequence()
@@ -62,6 +62,7 @@ class TerminalViewModel (
 
         if (escString.matches("$[A-HJKSTfm]".toRegex())) {
             escapeSequence(escString)
+            escString = ""
         }
     }
 
@@ -76,17 +77,46 @@ class TerminalViewModel (
     }
 
     private fun invalidEscapeSequence(){
-        escString.forEach { writeToBufferAtCursor(it) }
+        escString.forEach { writeCharAtCursor(it) }
         escString = ""
     }
 
-    private fun escapeSequence(sequence: String) {
-        when (sequence.last()) {
-            'A' -> {
+    private suspend fun escapeSequence(sequence: String) {
+        val length = sequence.length
+        val mode = sequence[length - 1]
+        var n = 1
+        var m = 1
+        val semicolonPos: Int
 
+        if (length != 2) {
+            if (mode != 'H') {
+                n = Integer.parseInt(sequence.substring(1, length - 1))
+            } else {
+                semicolonPos = sequence.indexOf(";")
+                if (semicolonPos != 1) {
+                    n = Integer.parseInt(sequence.substring(1, semicolonPos))
+                }
+                if (sequence[semicolonPos + 1] != 'H' || sequence[semicolonPos + 1] != 'f') {
+                    m = Integer.parseInt(sequence.substring(semicolonPos + 1, length - 1))
+                }
             }
         }
 
+        when (mode) {
+            'A' -> escapeSequenceUseCase.moveUp(getCursor(), n)
+            'B' -> escapeSequenceUseCase.moveDown(getCursor(), n)
+            'C' -> escapeSequenceUseCase.moveRight(getCursor(), n)
+            'D' -> escapeSequenceUseCase.moveLeft(getCursor(), n)
+            'E' -> escapeSequenceUseCase.moveDownToLineHead(getCursor(), n)
+            'F' -> escapeSequenceUseCase.moveUpToLineHead(getCursor(), n)
+            'G' -> escapeSequenceUseCase.moveCursor(getCursor(), n)
+            'H', 'f' -> escapeSequenceUseCase.moveCursor(getCursor(), n, m)
+            'J' -> escapeSequenceUseCase.clearScreen(getCursor(), n-1)
+            'K' -> escapeSequenceUseCase.clearLine(getCursor(), n-1)
+            'S' -> escapeSequenceUseCase.scrollNext(n)
+            'T' -> escapeSequenceUseCase.scrollBack(n)
+            'm' -> escapeSequenceUseCase.selectGraphicRendition(n)
+        }
     }
 
     suspend fun changeScreenSize(screenSize: ScreenSize) {

@@ -130,7 +130,7 @@ class TerminalView : View {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         val dispatchFirst = super.dispatchKeyEvent(event)
         if (event.action == KeyEvent.ACTION_UP){
-            viewModel.writeToBufferAtCursor(event.unicodeChar.toChar())
+            viewModel.writeCharAtCursor(event.unicodeChar.toChar())
         }
         return dispatchFirst
     }
@@ -173,7 +173,7 @@ class TerminalView : View {
     }
 
     fun addText(text: String) {
-        text.toCharArray().forEach { viewModel.writeToBufferAtCursor(it) }
+        text.toCharArray().forEach { viewModel.writeCharAtCursor(it) }
     }
 
     fun toggleCtlBtn() {
@@ -192,7 +192,7 @@ class TerminalView : View {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
-            viewModel.writeToBufferAtCursor('\u0008')
+            viewModel.writeCharAtCursor('\u0008')
             invalidate()
             return true
         }
