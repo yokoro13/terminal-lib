@@ -8,7 +8,7 @@ class SetText constructor(
     private val ITerminalRepository: ITerminalRepository
     ): UseCase<Terminal, SetText.Params>() {
 
-    override fun run(params: Params) = ITerminalRepository.setText(params.x, params.y, params.text)
+    override fun run(params: Params) = ITerminalRepository.setChar(params.x, params.y, params.text)
 
     data class Params(val x: Int, val y: Int, val text: Char)
 }

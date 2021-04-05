@@ -29,16 +29,25 @@ interface ITerminalRepository {
      * @param y : row
      * @param text : set text
      */
-    fun setText(x: Int, y: Int, text: Char): Either<Failure, Terminal>
+    fun setChar(x: Int, y: Int, text: Char): Either<Failure, Terminal>
 
     /**
-     * set color at (column: x, row: y)
+     * set foreground color at (column: x, row: y)
      *
      * @param x : column at y
      * @param y : row
      * @param color : color code
      */
-    fun setColor(x: Int, y: Int, color: Int): Either<Failure, Terminal>
+    fun setForeColor(x: Int, y: Int, color: Int): Either<Failure, Terminal>
+
+    /**
+     * set background color at (column: x, row: y)
+     *
+     * @param x : column at y
+     * @param y : row
+     * @param color : color code
+     */
+    fun setBackColor(x: Int, y: Int, color: Int): Either<Failure, Terminal>
 
     /**
      * get terminalBuffer

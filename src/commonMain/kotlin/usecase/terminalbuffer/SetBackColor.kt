@@ -1,14 +1,14 @@
 package usecase.terminalbuffer
 
-import core.UseCase
 import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.repository.ITerminalRepository
+import core.UseCase
 
-class SetColor constructor(
+class SetBackColor constructor(
     private val ITerminalRepository: ITerminalRepository
-    ): UseCase<Terminal, SetColor.Params>() {
+): UseCase<Terminal, SetBackColor.Params>() {
 
     data class Params(val x: Int, val y: Int, val color: Int)
 
-    override fun run(params: Params) = ITerminalRepository.setColor(params.x, params.y, params.color)
+    override fun run(params: Params) = ITerminalRepository.setBackColor(params.x, params.y, params.color)
 }

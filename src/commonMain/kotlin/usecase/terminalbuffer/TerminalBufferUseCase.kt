@@ -8,7 +8,8 @@ class TerminalBufferUseCase(
     private val addNewRow: AddNewRow,
     private val getTerminalBuffer: GetTerminalBuffer,
     private val setText: SetText,
-    private val setColor: SetColor
+    private val setForeColor: SetForeColor,
+    private val setBackColor: SetBackColor
 ): ITerminalBufferUseCase {
     override fun addNewRow(warp: Boolean) {
         addNewRow.run(AddNewRow.Params(warp))
@@ -21,7 +22,11 @@ class TerminalBufferUseCase(
         setText.run(SetText.Params(x, y, text))
     }
 
-    override fun setColor(x: Int, y: Int, color: Int) {
-        setColor.run(SetColor.Params(x, y, color))
+    override fun setForeColor(x: Int, y: Int, color: Int) {
+        setForeColor.run(SetForeColor.Params(x, y, color))
+    }
+
+    override fun setBackColor(x: Int, y: Int, color: Int) {
+        setBackColor.run(SetBackColor.Params(x, y, color))
     }
 }

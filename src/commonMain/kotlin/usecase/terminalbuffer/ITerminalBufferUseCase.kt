@@ -13,5 +13,7 @@ interface ITerminalBufferUseCase {
 
     fun setText(x: Int, y: Int, text: Char)
 
-    fun setColor(x: Int, y: Int, color: Int)
+    fun setForeColor(x: Int, y: Int, color: Int)
+
+    fun setBackColor(x: Int, y: Int, color: Int)
 }

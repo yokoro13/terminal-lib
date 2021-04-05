@@ -60,14 +60,19 @@ class TerminalRepository: ITerminalRepository {
             )
         }
 
-    override fun setText(x: Int, y: Int, text: Char): Either<Failure, Terminal> =
+    override fun setChar(x: Int, y: Int, text: Char): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
             this.terminal.terminalBuffer[y].terminalRow[x].char = text
         }
 
-    override fun setColor(x: Int, y: Int, color: Int): Either<Failure, Terminal> =
+    override fun setForeColor(x: Int, y: Int, color: Int): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
-            this.terminal.terminalBuffer[y].terminalRow[x].frontColor = color
+            this.terminal.terminalBuffer[y].terminalRow[x].foreColor = color
+        }
+
+    override fun setBackColor(x: Int, y: Int, color: Int): Either<Failure, Terminal> =
+        handleOrError(this.terminal) {
+            this.terminal.terminalBuffer[y].terminalRow[x].backColor = color
         }
 
     override fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalArray>> =

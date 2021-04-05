@@ -26,12 +26,12 @@ class TerminalRepositoryTest {
         val terminalRepository = TerminalRepository()
         terminalRepository.createTerminal(ScreenSize(20, 20))
 
-        terminalRepository.setText(0, 0, 'a')
-        terminalRepository.setText(1, 0, 'a')
-        terminalRepository.setText(2, 0, 'a')
-        terminalRepository.setText(3, 0, 'a')
-        terminalRepository.setText(4, 0, 'a')
-        terminalRepository.setText(5, 0, 'a')
+        terminalRepository.setChar(0, 0, 'a')
+        terminalRepository.setChar(1, 0, 'a')
+        terminalRepository.setChar(2, 0, 'a')
+        terminalRepository.setChar(3, 0, 'a')
+        terminalRepository.setChar(4, 0, 'a')
+        terminalRepository.setChar(5, 0, 'a')
 
 
         println("*** resize screen size to small ***")
