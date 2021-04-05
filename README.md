@@ -1,13 +1,11 @@
 # terminal-lib
 
-This library provides terminal features to multi platforms.
-
-(such as Screen, Cursor and Escape Sequence)
+This library provides simple terminal features such as Screen, Cursor and Escape Sequence to multi platforms.
 
 ## progress
 
 - [x] features
-  
+
 
 - [ ] Android
 - [ ] iOS
