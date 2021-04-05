@@ -19,13 +19,13 @@ class TerminalRepository: ITerminalRepository {
 
     private fun <T> getOrError(right: T): Either<Failure, T> =
         when (::terminal.isInitialized) {
-            true -> Left(Failure.UninitializedException)
+            false -> Left(Failure.UninitializedException)
             else -> Right(right)
         }
 
     private fun <T> handleOrError(right: T, f: () -> Unit): Either<Failure, T> =
         when (::terminal.isInitialized) {
-            true -> Left(Failure.UninitializedException)
+            false -> Left(Failure.UninitializedException)
             else -> {
                 f()
                 Right(right)
