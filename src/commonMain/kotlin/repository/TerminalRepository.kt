@@ -151,18 +151,22 @@ class TerminalRepository: ITerminalRepository {
     override fun isDisplaying(): Either<Failure, Boolean> =
         getOrError(terminal.cursor.isDisplaying)
 
-    private fun setX(x: Int): Cursor =
-        when {
-            (x < 0) -> Cursor(0, terminal.cursor.y)
-            (terminal.screenSize.columns <= x) -> Cursor(terminal.screenSize.columns - 1, terminal.cursor.y)
-            else -> Cursor(x, terminal.cursor.y)
-        }
+    private fun setX(x: Int) {
+        terminal.cursor =
+            when {
+                (x < 0) -> Cursor(0, terminal.cursor.y)
+                (terminal.screenSize.columns <= x) -> Cursor(terminal.screenSize.columns - 1, terminal.cursor.y)
+                else -> Cursor(x, terminal.cursor.y)
+            }
+    }
 
-    private fun setY(y: Int): Cursor =
-        when {
-            (y < 0) -> Cursor(terminal.cursor.x, 0)
-            (terminal.screenSize.rows <= y) -> Cursor(terminal.cursor.x, terminal.screenSize.rows - 1)
-            else -> Cursor(terminal.cursor.x, y)
-        }
+    private fun setY(y: Int) {
+        terminal.cursor =
+            when {
+                (y < 0) -> Cursor(terminal.cursor.x, 0)
+                (terminal.screenSize.rows <= y) -> Cursor(terminal.cursor.x, terminal.screenSize.rows - 1)
+                else -> Cursor(terminal.cursor.x, y)
+            }
+    }
 
 }
