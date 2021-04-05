@@ -18,6 +18,6 @@ class TerminalRepositoryTest {
         val terminalRepository = TerminalRepository()
         val ss = ScreenSize(48, 20)
         terminalRepository.createTerminal(ss)
-        assertEquals(getOrError(terminalRepository.getTerminalBuffer()).size, 1)
+        assertEquals(1, getOrError(terminalRepository.getTerminalBuffer()).size)
     }
 }
