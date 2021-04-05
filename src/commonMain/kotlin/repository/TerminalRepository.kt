@@ -43,10 +43,12 @@ class TerminalRepository: ITerminalRepository {
 
     override fun addRow(lineWarp: Boolean): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
-            TerminalRow(
-                CharArray(terminal.screenSize.columns) { ' ' },
-                IntArray(terminal.screenSize.columns) { 0 },
-                lineWarp
+            terminal.terminalBuffer.add(
+                TerminalRow(
+                    CharArray(terminal.screenSize.columns) { ' ' },
+                    IntArray(terminal.screenSize.columns) { 0 },
+                    lineWarp
+                )
             )
         }
 
