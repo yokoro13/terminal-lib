@@ -8,7 +8,8 @@ import entity.Cursor
 import entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
 import com.yokoro.terminal_lib.repository.ITerminalRepository
-import entity.TerminalRow
+import entity.TerminalArray
+import entity.TerminalChar
 
 /**
  * データの保存，取得をおこなう
@@ -34,35 +35,42 @@ class TerminalRepository: ITerminalRepository {
 
     override fun createTerminal(ss: ScreenSize): Either<Failure, None> {
         this.terminal = Terminal(ss)
-        addRow(false)
+        addRow(-1)
         return Right(None())
     }
 
     override fun getScreenSize(): Either<Failure, ScreenSize> =
         getOrError(terminal.screenSize)
 
-    override fun addRow(lineWarp: Boolean): Either<Failure, Terminal> =
+    private fun getEmptyTerminalArray(size: Int): ArrayList<TerminalChar> {
+        val emptyList: ArrayList<TerminalChar> = ArrayList()
+        for (i in 0 until size) {
+            emptyList.add(TerminalChar(' ', 0, 0))
+        }
+        return emptyList
+    }
+
+    override fun addRow(lineWarpPos: Int): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
             terminal.terminalBuffer.add(
-                TerminalRow(
-                    CharArray(terminal.screenSize.columns) { ' ' },
-                    IntArray(terminal.screenSize.columns) { 0 },
-                    lineWarp
+                TerminalArray(
+                    getEmptyTerminalArray(terminal.screenSize.columns),
+                    lineWarpPos
                 )
             )
         }
 
     override fun setText(x: Int, y: Int, text: Char): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
-            this.terminal.terminalBuffer[y].text[x] = text
+            this.terminal.terminalBuffer[y].terminalRow[x].char = text
         }
 
     override fun setColor(x: Int, y: Int, color: Int): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
-            this.terminal.terminalBuffer[y].color[x] = color
+            this.terminal.terminalBuffer[y].terminalRow[x].frontColor = color
         }
 
-    override fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalRow>> =
+    override fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalArray>> =
         getOrError(terminal.terminalBuffer)
 
     override fun resize(

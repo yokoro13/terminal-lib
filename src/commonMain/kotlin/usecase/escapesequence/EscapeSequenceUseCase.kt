@@ -3,7 +3,7 @@ package usecase.escapesequence
 import core.UseCase.None
 import entity.Cursor
 import entity.ScreenSize
-import entity.TerminalRow
+import entity.TerminalArray
 import usecase.cursor.ICursorUseCase
 import usecase.terminalbuffer.ITerminalBufferUseCase
 import usecase.terminal.GetScreenSize
@@ -22,7 +22,7 @@ class EscapeSequenceUseCase(
     private fun getScreenSize(): ScreenSize =
         getScreenSize.run(None()).getOrElse { throw IllegalArgumentException("") }
 
-    private fun getTerminalBuffer(): ArrayList<TerminalRow> =
+    private fun getTerminalBuffer(): ArrayList<TerminalArray> =
         terminalBufferUseCase.getTerminalBuffer()
 
     private fun getTopRow(): Int =

@@ -6,8 +6,7 @@ package entity
  * 色は16進数(#AARRGGBB)
  */
 
-data class TerminalRow(
-    var text: CharArray,
-    var color: IntArray,
-    var lineWrap: Boolean
+data class TerminalArray (
+    var terminalRow: ArrayList<TerminalChar>,
+    var lineWrapPos: Int
 )

@@ -1,6 +1,6 @@
 package usecase.terminalbuffer
 
-import entity.TerminalRow
+import entity.TerminalArray
 
 /**
  * TerminalBuffer に関する UseCase を定義
@@ -9,7 +9,7 @@ interface ITerminalBufferUseCase {
 
     fun addNewRow(warp: Boolean)
 
-    fun getTerminalBuffer(): ArrayList<TerminalRow>
+    fun getTerminalBuffer(): ArrayList<TerminalArray>
 
     fun setText(x: Int, y: Int, text: Char)
 

@@ -2,7 +2,7 @@ package usecase.terminalbuffer
 
 import core.UseCase.None
 import core.getOrElse
-import entity.TerminalRow
+import entity.TerminalArray
 
 class TerminalBufferUseCase(
     private val addNewRow: AddNewRow,
@@ -14,7 +14,7 @@ class TerminalBufferUseCase(
         addNewRow.run(AddNewRow.Params(warp))
     }
 
-    override fun getTerminalBuffer(): ArrayList<TerminalRow> =
+    override fun getTerminalBuffer(): ArrayList<TerminalArray> =
         getTerminalBuffer.run(None()).getOrElse { throw IllegalArgumentException("") }
 
     override fun setText(x: Int, y: Int, text: Char) {

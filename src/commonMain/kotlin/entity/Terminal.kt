@@ -2,7 +2,7 @@ package com.yokoro.terminal_lib.entity
 
 import entity.Cursor
 import entity.ScreenSize
-import entity.TerminalRow
+import entity.TerminalArray
 
 /**
  * ターミナルの画面情報を扱う
@@ -13,7 +13,7 @@ data class Terminal(
     var screenSize: ScreenSize
 ) {
     var cursor: Cursor = Cursor(0, 0)
-    var terminalBuffer: ArrayList<TerminalRow> = ArrayList<TerminalRow>()
+    var terminalBuffer: ArrayList<TerminalArray> = ArrayList<TerminalArray>()
     var topRow: Int = 0
     set(value) {
         if (value < 0) {

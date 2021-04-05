@@ -6,7 +6,7 @@ import entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
 import core.Either
 import core.UseCase.None
-import entity.TerminalRow
+import entity.TerminalArray
 
 interface ITerminalRepository {
 
@@ -20,7 +20,7 @@ interface ITerminalRepository {
     /**
      * add new row.
      */
-    fun addRow(lineWarp: Boolean = false): Either<Failure, Terminal>
+    fun addRow(lineWarpPos: Int = -1): Either<Failure, Terminal>
 
     /**
      * set text at (column: x, row: y)
@@ -45,7 +45,7 @@ interface ITerminalRepository {
      *
      * @return row CharArray
      */
-    fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalRow>>
+    fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalArray>>
 
     /**
      * resize buffer size
