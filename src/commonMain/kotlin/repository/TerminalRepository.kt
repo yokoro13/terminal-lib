@@ -116,8 +116,6 @@ class TerminalRepository: ITerminalRepository {
 
         for (row in 0 until oldBuffer.size) {
 
-            println("row: $row")
-
             if (oldBuffer[row].lineWrapPos == -1) {
                 if (row != 0) {
                     concat(newBuffer[writingLine].terminalRow, oldBuffer[row].terminalRow)
