@@ -63,6 +63,9 @@ class TerminalRepository: ITerminalRepository {
     override fun setChar(x: Int, y: Int, text: Char): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
             this.terminal.terminalBuffer[y].terminalRow[x].char = text
+            if (terminal.terminalBuffer[y].lineWrapPos < x) {
+                terminal.terminalBuffer[y].lineWrapPos = x
+            }
         }
 
     override fun setForeColor(x: Int, y: Int, color: Int): Either<Failure, Terminal> =
@@ -78,63 +81,103 @@ class TerminalRepository: ITerminalRepository {
     override fun getTerminalBuffer(): Either<Failure, ArrayList<TerminalArray>> =
         getOrError(terminal.terminalBuffer)
 
+    private fun <T> concat(a1: ArrayList<T>, a2: ArrayList<T>): ArrayList<T> {
+        a2.forEach { a1.add(it) }
+        return a1
+    }
+
+    private fun TerminalArray.addEmpty(n: Int) {
+        for (i in 0 until n) {
+            this.terminalRow.add(TerminalChar(' ', 0, 0))
+        }
+    }
+
     override fun resize(
        newScreenSize: ScreenSize
     ): Either<Failure, Terminal> {
-        if (::terminal.isInitialized) {
+        if (!::terminal.isInitialized) {
             return Left(Failure.UninitializedException)
         }
 
-        var oldX = 0
-        var oldY = 0
-        var newY = 0  // newTextBuffer の index
-        var lineWarp: Boolean
-        val newTextBuffer: ArrayList<TerminalRow> = ArrayList()
-
-        newTextBuffer.add(
-            TerminalRow(
-                CharArray(newScreenSize.columns){' '},
-                IntArray(newScreenSize.columns){0},
-                false
-            )
-        )
-
-        for (y in 0 until terminal.terminalBuffer.size){
-            for (newX in 0 until terminal.screenSize.columns){
-                newTextBuffer[newY].text[newX] = terminal.terminalBuffer[oldY].text[oldX]
-                oldX++
-
-                // oldX が 行文字数に
-                if (oldX == terminal.screenSize.columns){
-                    // 次の行に移動
-                    oldX = 0
-                    if(!terminal.terminalBuffer[oldY].lineWrap){
-                        oldY++
-                        break
-                    }
-                    oldY++
-                }
-                if (oldY == terminal.terminalBuffer.size){
-                    break
-                }
-            }
-            if (oldY == terminal.terminalBuffer.size){
-                break
-            }
-            newY++
-            lineWarp = oldX != terminal.screenSize.columns
-            newTextBuffer.add(
-                TerminalRow(
-                    CharArray(newScreenSize.columns){' '},
-                    IntArray(newScreenSize.columns){0},
-                    lineWarp
-                )
-            )
+        // 横幅が同じときは縦幅を縮めるだけ
+        if (terminal.screenSize.columns == newScreenSize.columns) {
+            val currentRow = terminal.topRow + terminal.cursor.y
+            terminal.screenSize.rows = newScreenSize.rows
+            terminal.topRow = if (currentRow - newScreenSize.rows >= 0) currentRow - newScreenSize.rows + 1 else 0
+            terminal.cursor = Cursor(terminal.cursor.x, currentRow - terminal.topRow)
+            return Right(terminal)
         }
 
-        terminal.terminalBuffer.clear()
-        terminal.terminalBuffer = newTextBuffer
+        val newBuffer: ArrayList<TerminalArray> = ArrayList()
+        val oldBuffer = terminal.terminalBuffer
+
+        var writingLine = 0
+
+        // TODO newBufferのlineWarpPos以降からnewScreenSize.columnsまで空白追加
+        for (row in 0 until oldBuffer.size) {
+
+            println("row: $row")
+
+            if (oldBuffer[row].lineWrapPos == -1) {
+                if (row != 0) {
+                    concat(newBuffer[writingLine].terminalRow, oldBuffer[row].terminalRow)
+                    terminal.cursor.y--
+                } else {
+                    newBuffer.add(oldBuffer[row])
+                }
+            } else {
+                newBuffer.add(
+                    TerminalArray(
+                        oldBuffer[row].terminalRow.subList(
+                            0,
+                            oldBuffer[row].lineWrapPos+1
+                        ) as ArrayList<TerminalChar>,
+                        oldBuffer[row].lineWrapPos
+                    )
+                )
+            }
+
+            val overed = newBuffer[writingLine].terminalRow.size - newScreenSize.columns
+
+            if (0 < overed) {
+                newBuffer[writingLine].lineWrapPos = -1
+                val usedLine = overed / newScreenSize.columns + 1
+
+                for (i in 0 until usedLine) {
+                    val overedParts = newBuffer[writingLine].terminalRow.subList(
+                        newScreenSize.columns,
+                        newBuffer[writingLine].terminalRow.size
+                    ) as ArrayList<TerminalChar>
+
+                    if (overedParts.size == 0) {
+                        break
+                    }
+
+                    newBuffer[writingLine].terminalRow = newBuffer[writingLine].terminalRow.subList(
+                        0,
+                        newScreenSize.columns
+                    ) as ArrayList<TerminalChar>
+
+                    newBuffer.add(TerminalArray(overedParts, -1))
+                    writingLine++
+                }
+            }
+
+            /**
+            if (newBuffer[writingLine].terminalRow.size < newScreenSize.columns) {
+                newBuffer[writingLine].addEmpty(newScreenSize.columns - newBuffer[writingLine].terminalRow.size)
+            }
+            **/
+        }
+
+        terminal.terminalBuffer = newBuffer
         terminal.screenSize = newScreenSize
+
+        val currentLine = if (newBuffer.size - newScreenSize.rows + terminal.cursor.y > 0) {
+            newBuffer.size - newScreenSize.rows + terminal.cursor.y
+        } else 0
+        terminal.topRow = if (currentLine - newScreenSize.rows >= 0) currentLine - newScreenSize.rows + 1 else 0
+        terminal.cursor = Cursor(newBuffer[currentLine].terminalRow.size - 1, currentLine - terminal.topRow)
 
         return Right(terminal)
     }
