@@ -114,7 +114,6 @@ class TerminalRepository: ITerminalRepository {
 
         var writingLine = 0
 
-        // TODO newBufferのlineWarpPos以降からnewScreenSize.columnsまで空白追加
         for (row in 0 until oldBuffer.size) {
 
             println("row: $row")
