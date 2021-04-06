@@ -6,6 +6,7 @@ import core.getOrElse
 import entity.Cursor
 import entity.ScreenSize
 import entity.TerminalArray
+import entity.TerminalChar
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,6 +27,15 @@ class TerminalRepositoryTest {
         var text: String = ""
         terminalArray.terminalRow.forEach { text+=it.char }
         return text
+    }
+
+    private fun String.addEmptyToScreenColumnSize(column: Int): String {
+        val size = this.length
+        var result = this
+        for (i in size until column) {
+            result += ' '
+        }
+        return result
     }
 
     @Test
@@ -64,7 +74,7 @@ class TerminalRepositoryTest {
         println("**topRow")
         assertEquals(1, topRow)
         println("**buffer")
-        assertEquals("a", getLineText(resizedTerminal[currentLine]))
+        assertEquals("a".addEmptyToScreenColumnSize(1), getLineText(resizedTerminal[currentLine]))
 
 
         println("*** resize to original size ***")
@@ -77,7 +87,7 @@ class TerminalRepositoryTest {
         println("**topRow")
         assertEquals(0, topRow)
         println("**buffer")
-        assertEquals("aaaaaa", getLineText(resizedTerminal[currentLine]))
+        assertEquals("aaaaaa".addEmptyToScreenColumnSize(20), getLineText(resizedTerminal[currentLine]))
     }
 
 

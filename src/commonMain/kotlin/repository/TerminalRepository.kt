@@ -86,8 +86,9 @@ class TerminalRepository: ITerminalRepository {
         return a1
     }
 
-    private fun TerminalArray.addEmpty(n: Int) {
-        for (i in 0 until n) {
+    private fun TerminalArray.addEmptyToScreenColumnSize(column: Int) {
+        val size = this.terminalRow.size
+        for (i in size until column) {
             this.terminalRow.add(TerminalChar(' ', 0, 0))
         }
     }
@@ -163,11 +164,13 @@ class TerminalRepository: ITerminalRepository {
                 }
             }
 
-            /**
-            if (newBuffer[writingLine].terminalRow.size < newScreenSize.columns) {
-                newBuffer[writingLine].addEmpty(newScreenSize.columns - newBuffer[writingLine].terminalRow.size)
+        }
+
+        newBuffer.forEach {
+            it.addEmptyToScreenColumnSize(newScreenSize.columns)
+            if (it.lineWrapPos != -1) {
+                it.lineWrapPos = it.terminalRow.size
             }
-            **/
         }
 
         terminal.terminalBuffer = newBuffer
