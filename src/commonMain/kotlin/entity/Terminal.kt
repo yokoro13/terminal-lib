@@ -16,8 +16,10 @@ data class Terminal(
     var terminalBuffer: ArrayList<TerminalArray> = ArrayList<TerminalArray>()
     var topRow: Int = 0
     set(value) {
-        if (value < 0) {
-            field = 0
+        field = if (value < 0) {
+            0
+        } else {
+            value
         }
     }
 }
