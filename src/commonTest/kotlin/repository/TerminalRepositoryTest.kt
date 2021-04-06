@@ -5,6 +5,7 @@ import core.Failure
 import core.getOrElse
 import entity.Cursor
 import entity.ScreenSize
+import entity.TerminalArray
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,6 +20,12 @@ class TerminalRepositoryTest {
         val ss = ScreenSize(48, 20)
         terminalRepository.createTerminal(ss)
         assertEquals(1, getOrError(terminalRepository.getTerminalBuffer()).size)
+    }
+
+    private fun getLineText(terminalArray: TerminalArray): String {
+        var text: String = ""
+        terminalArray.terminalRow.forEach { text+=it.char }
+        return text
     }
 
     @Test
@@ -39,9 +46,12 @@ class TerminalRepositoryTest {
         var topRow = getOrError(terminalRepository.getTopRow())
         var currentLine = topRow + getOrError(terminalRepository.getCursor()).y
         var resizedTerminal = getOrError(terminalRepository.getTerminalBuffer())
+        println("**currentLine")
         assertEquals(5, currentLine)
+        println("**topRow")
         assertEquals(5, getOrError(terminalRepository.getTopRow()))
-        assertEquals("a", resizedTerminal[currentLine].toString())
+        println("**buffer")
+        assertEquals("a", getLineText(resizedTerminal[currentLine]))
 
 
         println("*** resize row to large ***")
@@ -49,9 +59,12 @@ class TerminalRepositoryTest {
         topRow = getOrError(terminalRepository.getTopRow())
         currentLine = topRow + getOrError(terminalRepository.getCursor()).y
         resizedTerminal = getOrError(terminalRepository.getTerminalBuffer())
-        assertEquals(1, currentLine)
+        println("**currentLine")
+        assertEquals(5, currentLine)
+        println("**topRow")
         assertEquals(1, topRow)
-        assertEquals("a", resizedTerminal[currentLine].toString())
+        println("**buffer")
+        assertEquals("a", getLineText(resizedTerminal[currentLine]))
 
 
         println("*** resize to original size ***")
@@ -59,10 +72,14 @@ class TerminalRepositoryTest {
         topRow = getOrError(terminalRepository.getTopRow())
         currentLine = topRow + getOrError(terminalRepository.getCursor()).y
         resizedTerminal = getOrError(terminalRepository.getTerminalBuffer())
+        println("**currentLine")
         assertEquals(0, currentLine)
+        println("**topRow")
         assertEquals(0, topRow)
-        assertEquals("aaaaaa", resizedTerminal[currentLine].toString())
+        println("**buffer")
+        assertEquals("aaaaaa", getLineText(resizedTerminal[currentLine]))
     }
+
 
     @Test
     fun testSetCursor() {
