@@ -4,7 +4,7 @@ This library provides simple terminal features such as Screen, Cursor and Escape
 
 ## progress
 
-- [x] features
+- [x] common
 
 
 - [ ] Android
