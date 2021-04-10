@@ -6,7 +6,6 @@ import core.getOrElse
 import entity.Cursor
 import entity.ScreenSize
 import entity.TerminalArray
-import entity.TerminalChar
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
