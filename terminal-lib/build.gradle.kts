@@ -12,6 +12,10 @@ android {
         minSdkVersion(14)
         targetSdkVersion(30)
     }
+
+    sourceSets.forEach {
+        it.manifest.srcFile("src/andtoidMain/AndtoidManifest.xml")
+    }
 }
 
 repositories {
