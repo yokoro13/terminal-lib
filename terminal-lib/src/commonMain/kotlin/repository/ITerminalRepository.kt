@@ -1,4 +1,4 @@
-package com.yokoro.terminal_lib.repository
+package repository
 
 import core.Failure
 import entity.Cursor

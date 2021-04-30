@@ -2,7 +2,7 @@ package usecase.terminalbuffer
 
 import core.UseCase
 import com.yokoro.terminal_lib.entity.Terminal
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class AddNewRow constructor(
     private val ITerminalRepository: ITerminalRepository

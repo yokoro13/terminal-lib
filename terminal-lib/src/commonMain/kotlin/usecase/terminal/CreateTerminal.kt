@@ -3,7 +3,7 @@ package usecase.terminal
 import core.UseCase
 import core.UseCase.None
 import entity.ScreenSize
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class CreateTerminal constructor(
     private val ITerminalRepository: ITerminalRepository

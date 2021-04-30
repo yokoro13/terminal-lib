@@ -7,7 +7,6 @@ import core.UseCase.None
 import entity.Cursor
 import entity.ScreenSize
 import com.yokoro.terminal_lib.entity.Terminal
-import com.yokoro.terminal_lib.repository.ITerminalRepository
 import entity.TerminalArray
 import entity.TerminalChar
 

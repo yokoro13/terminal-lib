@@ -2,7 +2,7 @@ package usecase.cursor
 
 import core.UseCase
 import core.UseCase.None
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class SetCursor constructor(
     private val terminalRepository: ITerminalRepository

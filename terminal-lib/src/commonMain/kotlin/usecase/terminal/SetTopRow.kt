@@ -2,7 +2,7 @@ package usecase.terminal
 
 import core.UseCase
 import core.UseCase.None
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class SetTopRow constructor(
     private val ITerminalRepository: ITerminalRepository

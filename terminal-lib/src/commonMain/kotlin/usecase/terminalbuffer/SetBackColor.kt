@@ -1,7 +1,7 @@
 package usecase.terminalbuffer
 
 import com.yokoro.terminal_lib.entity.Terminal
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 import core.UseCase
 
 class SetBackColor constructor(

@@ -3,7 +3,7 @@ package usecase.terminalbuffer
 import core.UseCase
 import core.UseCase.None
 import entity.TerminalArray
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class GetTerminalBuffer constructor(
     private val ITerminalRepository: ITerminalRepository

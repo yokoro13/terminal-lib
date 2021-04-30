@@ -3,7 +3,7 @@ package usecase.cursor
 import core.UseCase.None
 import core.UseCase
 import entity.Cursor
-import com.yokoro.terminal_lib.repository.ITerminalRepository
+import repository.ITerminalRepository
 
 class GetCursor constructor(
     private val ITerminalRepository: ITerminalRepository
