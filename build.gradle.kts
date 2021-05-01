@@ -7,8 +7,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${project.extra["kotlin_version"]}")
+        classpath(GradlePlugin.kotlin)
+        classpath(GradlePlugin.android)
     }
 }
 
@@ -19,6 +19,8 @@ repositories {
 allprojects {
     repositories {
         google()
+        mavenCentral()
         maven("https://kotlin.bintray.com/kotlinx")
+        maven("https://jitpack.io")
     }
 }

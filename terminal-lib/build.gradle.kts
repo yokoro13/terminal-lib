@@ -1,20 +1,21 @@
+import dependencies.Dep
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("kotlin-parcelize")
 }
 
 group = "yokoro.com"
 version = "1.0-SNAPSHOT"
 
 android {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
     defaultConfig {
         compileSdkVersion(30)
         minSdkVersion(14)
         targetSdkVersion(30)
-    }
-
-    sourceSets.forEach {
-        it.manifest.srcFile("src/andtoidMain/AndtoidManifest.xml")
     }
 }
 
@@ -36,7 +37,6 @@ kotlin {
             framework()
         }
     }
-    iosArm32("iosArm32")
 
     jvm {
         compilations.all {
@@ -68,33 +68,64 @@ kotlin {
 
     
     sourceSets {
-        val commonMain by getting
-        val commonTest by getting {
+        val commonMain by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(Dep.Kotlin.common)
             }
         }
-        val jvmMain by getting
+        val commonTest by getting {
+            dependencies {
+                implementation(Dep.Test.common)
+                implementation(Dep.Test.annotation)
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(Dep.Kotlin.jvm)
+            }
+        }
         val jvmTest by getting {
             dependsOn(commonTest)
             dependencies {
-                implementation(kotlin("test-junit"))
+                implementation(Dep.Test.jvm)
             }
         }
         val androidMain by getting
         val androidTest by getting {
             dependsOn(commonTest)
-        }
-        val jsMain by getting
-        val jsTest by getting {
             dependencies {
-                implementation(kotlin("test-js"))
+                implementation(Dep.Test.jvm)
             }
         }
-        val nativeMain by getting
-        val nativeTest by getting
-        val iosMain by getting
-        val iosTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation(Dep.Kotlin.js)
+            }
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(Dep.Test.js)
+            }
+        }
+        val nativeMain by getting {
+            dependencies {
+
+            }
+        }
+        val nativeTest by getting {
+            dependencies {
+
+            }
+        }
+        val iosMain by getting {
+            dependencies {
+
+            }
+        }
+        val iosTest by getting {
+            dependencies {
+
+            }
+        }
     }
 }
