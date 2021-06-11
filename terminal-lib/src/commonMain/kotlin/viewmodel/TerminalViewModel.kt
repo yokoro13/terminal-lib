@@ -40,10 +40,15 @@ class TerminalViewModel (
         when (code) {
             '\r' -> cursorUseCase.setCursor(0, getCursor().y)
             '\n' -> {
-
+                cursorUseCase.setCursor(getCursor().x, getCursor().y + 1)
             }
-            '\b' -> {}
-            '\t' -> {}
+            '\b' -> {
+                cursorUseCase.setCursor(getCursor().x-1, getCursor().y)
+            }
+            '\t' -> {
+                val move = 4 - 4 % getCursor().x
+                cursorUseCase.setCursor(getCursor().x+move, getCursor().y)
+            }
         }
     }
 
