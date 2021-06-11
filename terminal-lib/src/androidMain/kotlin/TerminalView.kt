@@ -1,4 +1,3 @@
-
 class TerminalView {
     private val terminalViewController: TerminalViewController = TerminalViewController()
 
@@ -24,6 +23,4 @@ class TerminalView {
         val terminalRender: TerminalRender = TerminalRender()
         terminalRender.renderText(terminalViewController.getScreenText())
     }
-
-
 }

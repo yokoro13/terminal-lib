@@ -24,6 +24,4 @@ class TerminalView {
         val terminalRender: TerminalRender = TerminalRender()
         terminalRender.renderText(terminalViewController.getScreenText())
     }
-
-
 }

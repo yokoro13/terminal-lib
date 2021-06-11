@@ -1,9 +1,10 @@
 import dependencies.Dep
+import dependencies.Versions
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("kotlin-parcelize")
+    id("kotlin-android-extensions")
 }
 
 group = "yokoro.com"
@@ -11,27 +12,19 @@ version = "1.0-SNAPSHOT"
 
 android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
+    compileSdkVersion(Versions.compileSdkVersion)
     defaultConfig {
-        compileSdkVersion(30)
-        minSdkVersion(14)
-        targetSdkVersion(30)
+        minSdkVersion(Versions.minSdkVersion)
+        targetSdkVersion(Versions.targetSdkVersion)
+        versionCode (Versions.androidVersionCode )
+        versionName (Versions.androidVersionName)
     }
-}
-
-repositories {
-    google()
-    mavenCentral()
-    maven("https://kotlin.bintray.com/kotlinx")
-    maven("https://plugins.gradle.org/m2/")
 }
 
 group = "com.yokoro.terminal-lib"
 
 kotlin {
-    android {
-        publishLibraryVariants()
-    }
+    android()
     ios() {
         binaries {
             framework()
@@ -90,7 +83,11 @@ kotlin {
                 implementation(Dep.Test.jvm)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation("com.google.android.material:material:1.2.0")
+            }
+        }
         val androidTest by getting {
             dependsOn(commonTest)
             dependencies {

@@ -12,10 +12,6 @@ buildscript {
     }
 }
 
-repositories {
-    google()
-}
-
 allprojects {
     repositories {
         google()

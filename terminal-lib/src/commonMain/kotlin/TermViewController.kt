@@ -1,3 +1,5 @@
+import entity.Cursor
+import entity.ScreenSize
 import entity.TerminalArray
 import repository.TerminalRepository
 import usecase.cursor.*
@@ -47,9 +49,6 @@ class TerminalViewController {
         terminalBufferUseCase
     )
 
-
-
-
     private val terminalViewModel = TerminalViewModel(
         escapeSequenceUseCase,
         terminalUseCase,
@@ -58,11 +57,32 @@ class TerminalViewController {
         cursorUseCase
     )
 
-
     fun getScreenText(): ArrayList<TerminalArray>{
         return terminalViewModel.getTerminalBuffer()
     }
 
-    fun getCursor(){}
+    fun setScreenSize(columns: Int, rows: Int) {
+        terminalViewModel.changeScreenSize(ScreenSize(columns, rows))
+    }
+
+    fun runEscapeSequence(escapeSequence: String) {
+        terminalViewModel.runEscapeSequence(escapeSequence)
+    }
+
+    fun runOperationCode(code: Char) {
+        terminalViewModel.runOperationCode(code)
+    }
+
+    fun getCursor(): Cursor {
+        return terminalViewModel.getCursor()
+    }
+
+    fun scrollUp() {
+        terminalViewModel.scrollUp()
+    }
+
+    fun scrollDown() {
+        terminalViewModel.scrollDown()
+    }
 
 }
