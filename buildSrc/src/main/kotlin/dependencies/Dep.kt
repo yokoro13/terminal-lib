@@ -1,7 +1,7 @@
 package dependencies
 
 object Dep {
-    private const val kotlin = "1.4.30"
+    private const val kotlin = "1.5.10"
 
     object Kotlin {
         const val common = "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin"
