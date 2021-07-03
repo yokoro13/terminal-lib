@@ -1,3 +1,4 @@
+import controller.TerminalViewController
 
 class TerminalView {
     private val terminalViewController: TerminalViewController = TerminalViewController()

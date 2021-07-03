@@ -1,6 +1,8 @@
+import controller.ITerminalViewController
+import controller.TerminalViewController
 
 class TerminalView {
-    private val terminalViewController: TerminalViewController = TerminalViewController()
+    private val terminalViewController: ITerminalViewController = TerminalViewController()
 
     fun input(text: String){}
 
@@ -22,8 +24,6 @@ class TerminalView {
 
     fun update() {
         val terminalRender: TerminalRender = TerminalRender()
-        terminalRender.renderText(terminalViewController.getScreenText())
+        terminalRender.renderText(terminalViewController.getTerminalBuffer())
     }
-
-
 }

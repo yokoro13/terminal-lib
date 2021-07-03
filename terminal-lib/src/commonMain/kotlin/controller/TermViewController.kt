@@ -1,3 +1,5 @@
+package controller
+
 import entity.ScreenSize
 import repository.TerminalRepository
 import usecase.cursor.*
@@ -6,7 +8,7 @@ import usecase.screen.ScreenUseCase
 import usecase.terminal.*
 import usecase.terminalbuffer.*
 
-class TerminalViewController {
+class TerminalViewController: ITerminalViewController {
     private val terminalRepository: TerminalRepository = TerminalRepository()
     private val terminalBufferUseCase = TerminalBufferUseCase(
         AddNewRow(terminalRepository),
@@ -49,13 +51,31 @@ class TerminalViewController {
 
     private var escString: String = ""
 
-    fun getCursor() = cursorUseCase.getCursor()
+    private var opCode: List<Char> = listOf<Char>('\n', '\r', '\t', '\b')
 
-    fun getTerminalBuffer() = terminalBufferUseCase.getTerminalBuffer()
+    fun getCursor() = cursorUseCase.getCursor()
 
     fun getTopRow() = terminalUseCase.getTopRow()
 
     fun getScreenSize() = terminalUseCase.getScreenSize()
+
+    override fun inputText(text: String) {
+        writeCharOrRunEscSeq(text)
+    }
+
+    override fun changeScreenSize(screenSize: ScreenSize) {
+        terminalUseCase.resize(screenSize)
+    }
+
+    override fun scrollDown(n: Int) {
+        screenUseCase.scrollDown()
+    }
+
+    override fun scrollUp(n: Int) {
+        screenUseCase.scrollUp()
+    }
+
+    override fun getTerminalBuffer() = terminalBufferUseCase.getTerminalBuffer()
 
     fun runOperationCode(code: Char) {
         when (code) {
@@ -74,10 +94,14 @@ class TerminalViewController {
     }
 
     fun writeCharAtCursor(text: Char) {
-        terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCase.getTopRow(), text)
+        if (opCode.contains(text)) {
+            runOperationCode(text)
+        } else {
+            terminalBufferUseCase.setText(getCursor().x, getCursor().y + terminalUseCase.getTopRow(), text)
+        }
     }
 
-    fun runEscapeSequence(text: String) {
+    fun writeCharOrRunEscSeq(text: String) {
         text.forEach { checkEscapeSequenceCharAndRun(it) }
     }
 
@@ -145,18 +169,6 @@ class TerminalViewController {
             'T' -> escapeSequenceUseCase.scrollBack(n)
             'm' -> escapeSequenceUseCase.selectGraphicRendition(n)
         }
-    }
-
-    fun changeScreenSize(screenSize: ScreenSize) {
-        terminalUseCase.resize(screenSize)
-    }
-
-    fun scrollDown() {
-        screenUseCase.scrollDown()
-    }
-
-    fun scrollUp() {
-        screenUseCase.scrollUp()
     }
 
 }
