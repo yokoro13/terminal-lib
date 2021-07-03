@@ -23,7 +23,6 @@ class TerminalView {
 
     fun update() {
         val terminalRender: TerminalRender = TerminalRender()
-        terminalRender.renderText(terminalViewController.getScreenText())
     }
 
 
