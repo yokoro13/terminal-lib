@@ -4,9 +4,9 @@ import core.UseCase
 import com.yokoro.terminal_lib.entity.Terminal
 import repository.ITerminalRepository
 
-class SetText constructor(
+class SetChar constructor(
     private val ITerminalRepository: ITerminalRepository
-    ): UseCase<Terminal, SetText.Params>() {
+    ): UseCase<Terminal, SetChar.Params>() {
 
     override fun run(params: Params) = ITerminalRepository.setChar(params.x, params.y, params.text)
 

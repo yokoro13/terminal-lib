@@ -59,6 +59,15 @@ class TerminalRepository: ITerminalRepository {
             )
         }
 
+    override fun setTerminalChar(x: Int, y: Int, terminalChar: TerminalChar): Either<Failure, Terminal> =
+        handleOrError(this.terminal) {
+            this.terminal.terminalBuffer[y].terminalRow[x] = terminalChar
+            if (terminal.terminalBuffer[y].lineWrapPos < x) {
+                terminal.terminalBuffer[y].lineWrapPos = x
+            }
+        }
+
+
     override fun setChar(x: Int, y: Int, text: Char): Either<Failure, Terminal> =
         handleOrError(this.terminal) {
             this.terminal.terminalBuffer[y].terminalRow[x].char = text

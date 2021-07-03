@@ -7,6 +7,7 @@ import com.yokoro.terminal_lib.entity.Terminal
 import core.Either
 import core.UseCase.None
 import entity.TerminalArray
+import entity.TerminalChar
 
 interface ITerminalRepository {
 
@@ -21,6 +22,8 @@ interface ITerminalRepository {
      * add new row.
      */
     fun addRow(lineWarpPos: Int = -1): Either<Failure, Terminal>
+
+    fun setTerminalChar(x: Int, y: Int, terminalChar: TerminalChar): Either<Failure, Terminal>
 
     /**
      * set text at (column: x, row: y)
