@@ -34,7 +34,7 @@ class TerminalUseCase (
     }
 
     override fun inputText(cursor: Cursor, text: Char) {
-        terminalBufferUseCase.setText(cursor.x, cursor.y, text)
+        terminalBufferUseCase.setChar(cursor.x, cursor.y, text)
     }
 
     override fun inputColor(cursor: Cursor, color: Int) {

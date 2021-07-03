@@ -106,13 +106,13 @@ class EscapeSequenceUseCase(
 
     private fun clearLineFrom(line: Int, from: Int) {
         for (x in from until getScreenSize().columns) {
-            terminalBufferUseCase.setText(x, line, ' ')
+            terminalBufferUseCase.setChar(x, line, ' ')
         }
     }
 
     private fun clearLineTo(line: Int, to: Int) {
         for (x in 0 until to) {
-            terminalBufferUseCase.setText(x, line, ' ')
+            terminalBufferUseCase.setChar(x, line, ' ')
         }
     }
 
