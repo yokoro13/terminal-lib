@@ -1,1 +1,7 @@
 /.gradle/*
+/build/*
+/terminal-lib/build/*
+/buildSrc/build/*
+/buildSrc/.gradle/*
+local.properties
+
